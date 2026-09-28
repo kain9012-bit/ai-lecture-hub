@@ -1,0 +1,1736 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>바이브코딩 3시간 실습 강의 · HTML 슬라이드</title>
+<link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" />
+<style>
+:root{
+  --yellow:#E3B72E;
+  --yellow-deep:#CBA023;
+  --yellow-soft:#F1E6C0;
+  --ink:#141414;
+  --ink2:#333333;
+  --gray:#5f5f5f;
+  --gray2:#8f8f8f;
+  --line:#e6e6e6;
+  --line2:#d6d6d6;
+  --white:#ffffff;
+  --dark:#141414;
+  --paper:#faf8f2;
+}
+*{box-sizing:border-box}
+html,body{margin:0;width:100%;height:100%;overflow:hidden;background:var(--yellow);
+  color:var(--ink);font-family:"Pretendard","Pretendard Variable","Noto Sans KR","Malgun Gothic",Arial,sans-serif;-webkit-font-smoothing:antialiased;}
+body{font-size:18px;}
+.deck{width:100vw;height:100vh;position:relative;background:var(--yellow);}
+.slide{position:absolute;inset:0;display:none;padding:24px;background:var(--yellow);}
+.slide.active{display:block;}
+.panel{position:relative;width:100%;height:100%;background:var(--white);border-radius:6px;
+  padding:44px 58px 66px;overflow:hidden;box-shadow:0 18px 40px rgba(0,0,0,.10);}
+
+/* top + footer */
+.topbar{display:flex;align-items:center;justify-content:space-between;
+  font-size:11px;letter-spacing:.22em;text-transform:uppercase;font-weight:800;color:var(--gray);}
+.brand{display:flex;align-items:center;gap:9px;color:var(--ink);}
+.brand .sq{width:16px;height:16px;background:var(--yellow);display:inline-block;}
+.brand b{font-weight:900;letter-spacing:.16em;}
+.footer{position:absolute;left:58px;right:58px;bottom:20px;display:flex;align-items:center;
+  justify-content:center;font-size:10.5px;letter-spacing:.14em;color:var(--gray2);
+  border-top:1px solid var(--line);padding-top:11px;text-transform:uppercase;}
+.footer>div:first-child{display:none;}
+.footer b{color:var(--ink);font-weight:800;}
+
+/* content */
+.content{position:relative;margin-top:26px;height:calc(100% - 96px);}
+.tight .kicker{margin-bottom:14px;}
+.tight h1{font-size:38px;margin-bottom:12px;}
+.tight .lower{margin-top:14px;}
+.tight .card{min-height:0;padding:16px 20px;}
+.tight .card h3{font-size:23px;margin-bottom:9px;}
+.tight .card p{font-size:16.5px;}
+.tight .tablewrap{margin-top:12px;}
+.tight .dense td{padding:9px 14px;}
+.tight .side-note{margin-top:14px;padding:14px 20px;font-size:17px;}
+.tight .codecard pre{font-size:13px;line-height:1.55;padding:14px 16px;}
+.kicker{display:inline-block;font-size:13.5px;letter-spacing:.24em;text-transform:uppercase;
+  color:var(--ink);font-weight:900;background:var(--yellow);padding:6px 13px;margin-bottom:22px;}
+h1{font-size:50px;line-height:1.14;margin:0 0 20px;font-weight:900;letter-spacing:-.035em;max-width:1040px;}
+h1 mark,mark{background:var(--yellow);color:var(--ink);padding:0 .08em;border-radius:2px;}
+h2{font-size:37px;line-height:1.2;margin:0 0 14px;font-weight:900;letter-spacing:-.03em;}
+.lead{font-size:24.5px;line-height:1.5;margin:0 0 18px;color:var(--ink2);font-weight:500;letter-spacing:-.02em;max-width:960px;}
+.body-text{font-size:19px;line-height:1.72;color:var(--ink2);margin:0;font-weight:400;}
+.rule{width:74px;border-top:3px solid var(--ink);margin:18px 0 22px;}
+.ghost{position:absolute;right:8px;top:-6px;font-size:150px;line-height:1;font-weight:900;
+  color:var(--yellow-soft);z-index:0;pointer-events:none;letter-spacing:-.05em;}
+
+/* grids + cards */
+.grid{display:grid;gap:18px;position:relative;z-index:2;}
+.grid.two{grid-template-columns:1fr 1fr;}
+.grid.three{grid-template-columns:repeat(3,1fr);}
+.grid.four{grid-template-columns:repeat(4,1fr);}
+.lower{margin-top:24px;}
+.card{background:var(--paper);border:1px solid var(--line);border-top:4px solid var(--yellow);
+  border-radius:6px;padding:24px 26px;min-height:158px;display:flex;flex-direction:column;}
+.card.dark{background:var(--dark);color:#f6f6f4;border-top-color:var(--yellow);}
+.card .meta{font-size:12px;letter-spacing:.18em;text-transform:uppercase;font-weight:900;color:var(--ink);
+  background:var(--yellow);display:inline-block;padding:4px 10px;margin-bottom:15px;align-self:flex-start;}
+.card.dark .meta{color:var(--ink);}
+.card h3{font-size:25px;line-height:1.24;margin:0 0 11px;font-weight:800;letter-spacing:-.03em;}
+.card p{font-size:18px;line-height:1.6;color:var(--gray);margin:0;font-weight:400;}
+.card.dark p{color:#b9b9b4;}
+
+/* side notes */
+.side-note{margin-top:20px;border-left:5px solid var(--yellow);background:var(--paper);
+  padding:18px 24px;font-size:19px;line-height:1.58;color:var(--ink2);font-weight:600;border-radius:0 6px 6px 0;position:relative;z-index:2;}
+.side-note.danger{border-left-color:#e2481f;background:#fdf1ee;}
+.side-note.ok{border-left-color:#1f9d55;background:#eefaf2;}
+
+/* lists */
+.big-list{margin:0;padding:0;list-style:none;display:grid;gap:15px;position:relative;z-index:2;}
+.big-list li{font-size:22px;line-height:1.4;padding-left:30px;position:relative;font-weight:600;letter-spacing:-.02em;}
+.big-list li:before{content:"";position:absolute;left:0;top:.5em;width:14px;height:14px;background:var(--yellow);}
+.small-list li{font-size:19px;font-weight:500;}
+
+/* cover */
+.cover .panel{padding:0;display:grid;grid-template-columns:1.4fr .95fr;}
+.cover .left{position:relative;padding:52px 54px;display:flex;flex-direction:column;justify-content:center;}
+.cover .right{background:var(--yellow);padding:48px 44px;display:flex;flex-direction:column;justify-content:center;}
+.cover .tag{font-size:13px;letter-spacing:.26em;text-transform:uppercase;font-weight:900;color:var(--ink);margin-bottom:26px;}
+.cover h1{font-size:62px;line-height:1.08;margin:0 0 26px;}
+.cover .sub{font-size:22px;line-height:1.52;color:var(--ink2);font-weight:500;max-width:520px;}
+.meta-list{display:grid;gap:0;}
+.meta-list div{display:grid;grid-template-columns:96px 1fr;align-items:center;
+  border-bottom:1px solid rgba(0,0,0,.16);padding:13px 0;}
+.meta-list span{font-size:12px;letter-spacing:.18em;font-weight:900;color:#6a5c00;text-transform:uppercase;}
+.meta-list b{font-size:17.5px;color:var(--ink);font-weight:800;}
+.agenda-row{margin-top:34px;display:grid;grid-template-columns:repeat(2,1fr);gap:6px 24px;
+  border-top:3px solid var(--ink);z-index:3;}
+.agenda-row div{padding:14px 8px 0 0;}
+.agenda-row b{display:block;font-size:12px;letter-spacing:.14em;font-weight:900;color:var(--ink);margin-bottom:6px;}
+.agenda-row span{font-size:15.5px;font-weight:600;color:var(--ink2);line-height:1.4;}
+
+/* section divider */
+.section .panel{background:var(--yellow);display:flex;flex-direction:column;justify-content:center;padding:56px 64px;}
+.section .topbar{color:#7a6a00;}
+.section .brand{color:var(--ink);}
+.section .brand .sq{background:var(--ink);}
+.section .num{font-size:150px;font-weight:900;line-height:.9;letter-spacing:-.05em;color:var(--ink);margin-bottom:8px;}
+.section h1{font-size:52px;color:var(--ink);max-width:960px;margin:0 0 18px;}
+.section .desc{font-size:20.5px;line-height:1.55;color:var(--ink2);font-weight:600;max-width:860px;}
+.section .footer{border-top-color:rgba(0,0,0,.2);color:#8a7700;}
+.section .footer b{color:var(--ink);}
+.section .tlabel{font-size:13px;letter-spacing:.2em;text-transform:uppercase;font-weight:900;color:var(--ink);
+  background:var(--white);display:inline-block;padding:6px 14px;margin-bottom:22px;align-self:flex-start;}
+
+/* dark slide */
+.dark-slide .panel{background:var(--dark);color:#f4f4f2;}
+.dark-slide .topbar{color:#8f8f8a;}
+.dark-slide .brand{color:#f4f4f2;}
+.dark-slide h1{color:#f6f6f4;}
+.dark-slide .lead{color:#cececa;}
+.dark-slide .footer{border-top-color:#333;color:#7d7d78;}
+.dark-slide .footer b{color:#f4f4f2;}
+.dark-slide .kicker{color:var(--ink);}
+
+/* timeline */
+.timeline{display:grid;grid-template-columns:repeat(4,1fr);border-top:3px solid var(--ink);margin-top:26px;position:relative;z-index:2;}
+.timeline>div{padding:22px 18px;border-right:1px solid var(--line);min-height:200px;}
+.timeline>div:last-child{border-right:0;}
+.timeline b{font-size:14px;font-weight:900;letter-spacing:.1em;color:var(--ink);background:var(--yellow);padding:4px 9px;}
+.timeline h3{font-size:24px;font-weight:800;margin:15px 0 10px;letter-spacing:-.03em;}
+.timeline p{font-size:17px;line-height:1.55;color:var(--gray);margin:0;}
+.timeline .dur{font-size:14px;color:var(--gray2);font-weight:700;margin-top:12px;}
+
+/* process flow */
+.flow{display:grid;border-top:3px solid var(--ink);margin-top:24px;position:relative;z-index:2;}
+.flow.three{grid-template-columns:repeat(3,1fr);}
+.flow.four{grid-template-columns:repeat(4,1fr);}
+.flow.five{grid-template-columns:repeat(5,1fr);}
+.flow.six{grid-template-columns:repeat(6,1fr);}
+.flow>div{padding:22px 18px;border-right:1px solid var(--line);display:flex;flex-direction:column;}
+.flow>div:last-child{border-right:0;}
+.flow .n{font-size:25px;font-weight:900;color:var(--ink);background:var(--yellow);width:46px;height:46px;
+  display:flex;align-items:center;justify-content:center;margin-bottom:16px;}
+.flow h3{font-size:23px;font-weight:800;margin:0 0 9px;letter-spacing:-.03em;}
+.flow p{font-size:17.5px;line-height:1.55;color:var(--gray);margin:0;}
+
+/* compare */
+.compare{display:grid;grid-template-columns:1fr 1fr;border-top:3px solid var(--ink);margin-top:24px;
+  height:calc(100% - 150px);position:relative;z-index:2;}
+.compare>div{padding:34px 38px;display:flex;flex-direction:column;justify-content:center;border-right:1px solid var(--line);}
+.compare>div:last-child{border-right:0;}
+.compare>div.hi{background:var(--yellow);}
+.compare small{font-size:13px;letter-spacing:.2em;text-transform:uppercase;font-weight:900;color:var(--ink);
+  background:var(--white);display:inline-block;padding:5px 11px;margin-bottom:20px;align-self:flex-start;}
+.compare>div:not(.hi) small{background:var(--yellow);}
+.compare h3{font-size:33px;font-weight:900;line-height:1.2;margin:0 0 16px;letter-spacing:-.03em;}
+.compare p{font-size:18px;line-height:1.62;color:var(--ink2);margin:0;font-weight:500;}
+
+/* table */
+.tablewrap{margin-top:18px;border-top:3px solid var(--ink);position:relative;z-index:2;}
+table{border-collapse:collapse;width:100%;font-size:15px;line-height:1.5;}
+th{background:var(--yellow);padding:12px 14px;text-align:left;color:var(--ink);font-size:13px;
+  letter-spacing:.1em;text-transform:uppercase;font-weight:900;}
+td{padding:13px 15px;border-bottom:1px solid var(--line);vertical-align:top;color:var(--ink2);font-weight:400;font-size:17.5px;}
+td:first-child{font-weight:800;color:var(--ink);}
+.dense table{font-size:16.5px;}
+.dense td{padding:11px 14px;font-size:16.5px;}
+
+/* big number */
+.bignum{display:flex;align-items:baseline;gap:16px;margin-top:8px;position:relative;z-index:2;}
+.bignum .n{font-size:120px;font-weight:900;line-height:.9;letter-spacing:-.04em;color:var(--ink);
+  background:var(--yellow);padding:0 18px;}
+.bignum .lbl{font-size:22px;font-weight:700;color:var(--ink2);line-height:1.4;}
+
+/* checklist */
+.checklist{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;margin-top:22px;position:relative;z-index:2;}
+.checklist div{background:var(--paper);border:1px solid var(--line);border-left:4px solid var(--yellow);
+  border-radius:0 6px 6px 0;padding:16px 20px;}
+.checklist b{display:block;font-size:20px;font-weight:800;margin-bottom:6px;letter-spacing:-.02em;}
+.checklist span{font-size:17.5px;line-height:1.5;color:var(--gray);}
+
+/* badges */
+.badges{display:flex;gap:9px;flex-wrap:wrap;margin-top:14px;}
+.badge{border:1px solid var(--line2);background:var(--white);border-radius:999px;padding:7px 15px;
+  font-size:14px;font-weight:800;color:var(--ink2);}
+.badge.dark{background:var(--ink);border-color:var(--ink);color:#f4f4f2;}
+.badge.y{background:var(--yellow);border-color:var(--yellow);color:var(--ink);}
+
+/* prompt slide */
+.prompt-slide h1{font-size:34px;margin-bottom:14px;}
+.prompt-layout{display:grid;grid-template-columns:.56fr 1.44fr;gap:20px;height:calc(100% - 96px);position:relative;z-index:2;}
+.prompt-info{background:var(--paper);border:1px solid var(--line);border-top:4px solid var(--yellow);border-radius:6px;padding:22px;}
+.prompt-info h3{font-size:24px;font-weight:800;margin:0 0 12px;letter-spacing:-.03em;}
+.prompt-info p{font-size:17px;line-height:1.6;color:var(--gray);margin:0 0 13px;}
+.prompt-box{position:relative;background:var(--dark);color:#f4f4f2;border-radius:6px;overflow:hidden;
+  box-shadow:0 16px 36px rgba(0,0,0,.2);}
+.prompt-box header{height:44px;display:flex;align-items:center;justify-content:space-between;
+  background:#0c0c0c;border-bottom:1px solid rgba(255,255,255,.08);padding:0 14px 0 18px;}
+.prompt-box header b{font-size:12px;letter-spacing:.2em;color:var(--yellow);font-weight:800;}
+.copy-btn{border:1px solid rgba(255,255,255,.24);background:var(--yellow);color:var(--ink);border-radius:999px;
+  padding:7px 15px;font-size:12px;font-weight:900;cursor:pointer;}
+.copy-btn:hover{opacity:.85;}
+.prompt-text{white-space:pre-wrap;margin:0;padding:22px 26px;font-family:"D2Coding","Consolas","Malgun Gothic",monospace;
+  font-size:15px;line-height:1.6;height:calc(100% - 44px);overflow:auto;tab-size:2;color:#efefe9;}
+.mini-code{background:var(--dark);color:#f4f4f2;border-left:5px solid var(--yellow);border-radius:0 6px 6px 0;
+  padding:18px 22px;font-family:"D2Coding","Consolas","Malgun Gothic",monospace;font-size:16.5px;line-height:1.55;
+  white-space:pre-wrap;margin-top:18px;position:relative;z-index:2;}
+
+/* code compare (console types) */
+.codecard{background:var(--dark);color:#f4f4f2;border-radius:6px;overflow:hidden;display:flex;flex-direction:column;}
+.codecard .h{padding:12px 16px;background:#0c0c0c;font-size:12px;letter-spacing:.16em;font-weight:800;color:var(--yellow);}
+.codecard pre{margin:0;padding:18px 20px;font-family:"D2Coding","Consolas",monospace;font-size:15px;line-height:1.6;
+  white-space:pre-wrap;color:#eef;overflow:auto;flex:1;}
+.codecard .h{font-size:13px;}
+
+/* quote */
+.quote{background:var(--yellow);padding:36px 44px;border-radius:6px;position:relative;z-index:2;}
+.quote p{font-size:34px;line-height:1.32;margin:0;font-weight:900;letter-spacing:-.03em;color:var(--ink);}
+.quote span{display:block;margin-top:16px;font-size:17px;color:var(--ink2);font-weight:600;}
+
+/* photo placeholder with yellow corner (decorative) */
+.imgbox{background:linear-gradient(135deg,#2b2b2b,#4a4a4a);border-radius:6px;position:relative;overflow:hidden;
+  display:flex;align-items:center;justify-content:center;min-height:200px;color:#cfcfcf;font-size:13px;letter-spacing:.15em;font-weight:700;}
+.imgbox:after{content:"";position:absolute;right:0;top:0;width:64px;height:64px;background:var(--yellow);}
+
+/* controls */
+.controls{position:fixed;right:18px;bottom:44px;display:flex;gap:8px;z-index:50;background:rgba(21,21,21,.9);
+  padding:8px;border-radius:999px;box-shadow:0 10px 28px rgba(0,0,0,.25);}
+.controls button{width:34px;height:34px;border-radius:50%;border:1px solid rgba(255,255,255,.2);
+  background:transparent;color:#f4f4f2;font-weight:900;cursor:pointer;font-size:16px;}
+.controls button:hover{background:var(--yellow);color:var(--ink);border-color:var(--yellow);}
+.controls .count{color:#f4f4f2;display:flex;align-items:center;padding:0 10px;font-size:12px;font-weight:700;}
+.help{position:fixed;left:18px;bottom:44px;z-index:50;background:rgba(21,21,21,.85);color:#f4f4f2;
+  border-radius:999px;padding:10px 16px;font-size:11.5px;letter-spacing:.04em;}
+body.hide-ui .controls,body.hide-ui .help{display:none;}
+
+/* overview */
+.overview{position:fixed;inset:0;background:rgba(21,21,21,.97);z-index:80;display:none;padding:52px;overflow:auto;color:#f4f4f2;}
+.overview.show{display:block;}
+.overview h2{font-size:32px;font-weight:900;margin:0 0 26px;letter-spacing:-.03em;color:var(--yellow);}
+.overview-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;}
+.thumb{border:1px solid rgba(255,255,255,.14);background:#242424;border-radius:5px;padding:14px;cursor:pointer;min-height:104px;}
+.thumb:hover{border-color:var(--yellow);}
+.thumb b{color:var(--yellow);font-size:12px;font-weight:800;}
+.thumb span{display:block;margin-top:9px;font-size:14.5px;line-height:1.34;font-weight:700;letter-spacing:-.02em;}
+
+@media (max-width:1100px){
+  h1{font-size:36px}.cover h1{font-size:44px}.lead{font-size:18px}
+  .grid.four{grid-template-columns:repeat(2,1fr)}.timeline{grid-template-columns:repeat(2,1fr)}
+  .flow.five,.flow.six{grid-template-columns:repeat(3,1fr)}.prompt-layout{grid-template-columns:1fr}
+  .prompt-info{display:none}.cover .panel{grid-template-columns:1fr}
+}
+@page{size:16in 9in;margin:0}
+@media print{
+  html,body{overflow:visible}.deck{width:16in;height:auto}
+  .slide{display:block;position:relative;width:16in;height:9in;page-break-after:always;padding:20px}
+  .controls,.help,.overview{display:none!important}
+  .prompt-text{overflow:hidden;font-size:10.5px}
+}
+</style>
+</head>
+<body>
+<div class="deck">
+<!--SLIDES_START-->
+
+<!-- 1 COVER -->
+<section class="slide cover" data-title="바이브코딩 3시간 실습 강의">
+  <div class="panel">
+    <div class="left">
+      <div class="topbar" style="margin-bottom:0"><div class="brand"><span class="sq"></span><b>VIBE CODING</b></div><div>WORKSHOP · 3HOURS</div></div>
+      <div style="margin:auto 0">
+        <div class="tag">HANDS-ON WORKSHOP · 180분</div>
+        <h1>바이브코딩으로<br/><mark>업무도구</mark>를<br/>직접 만들어봅니다</h1>
+        <p class="sub">코드는 AI가 씁니다. 우리는 업무의 불편함과 원하는 결과를 설명합니다. 오늘은 듣는 강의가 아니라 만드는 강의입니다.</p>
+      </div>
+      <div class="agenda-row">
+        <div><b>이론 30분</b><span>바이브코딩 개념</span></div>
+        <div><b>실습 A 70분</b><span>HTML 업무도구 · 공유</span></div>
+        <div><b>실습 B 70분</b><span>Console · 확장 프로그램</span></div>
+        <div><b>마무리 10분</b><span>업무 적용 정리</span></div>
+      </div>
+    </div>
+    <div class="right">
+      <div class="meta-list">
+        <div><span>FORMAT</span><b>실습형 강의</b></div>
+        <div><span>DURATION</span><b>3시간 (180분)</b></div>
+        <div><span>대상</span><b>비개발자 포함 전 직군</b></div>
+        <div><span>준비물</span><b>노트북 · Chrome</b></div>
+        <div><span>OUTPUT</span><b>공유 가능한 도구</b></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 오늘의 목표 -->
+<section class="slide" data-title="오늘 강의의 목표">
+  <div class="panel">
+    <div class="topbar"><div class="brand"><span class="sq"></span><b>VIBE CODING</b></div><div>오늘의 목표</div></div>
+    <main class="content" style="display:flex;flex-direction:column;justify-content:center">
+      <div class="ghost">GOAL</div>
+      <div class="kicker">TODAY'S GOAL</div>
+      <h1>내 업무의 문제는<br/>AI를 활용해서 <mark>‘내’가 해결</mark>합니다</h1>
+      <p class="lead">누가 대신 만들어주는 것이 아닙니다. 내 업무를 가장 잘 아는 <b>내가</b>, AI를 도구로 삼아 직접 해결책을 만드는 것이 오늘의 목표입니다.</p>
+      <div class="grid three lower">
+        <div class="card"><span class="meta">문제 발견</span><h3>내가 찾는다</h3><p>내 업무의 반복되고 불편한 지점을 가장 잘 아는 사람은 나입니다.</p></div>
+        <div class="card"><span class="meta">도구 제작</span><h3>AI로 만든다</h3><p>코드는 AI에게 맡기고, 나는 무엇을 원하는지 설명합니다.</p></div>
+        <div class="card dark"><span class="meta">직접 해결</span><h3>내가 끝낸다</h3><p>실행해보고 고쳐가며, 내 손으로 결과물을 완성합니다.</p></div>
+      </div>
+    </main>
+    <div class="footer"><div></div><div><b>0</b></div></div>
+  </div>
+</section>
+
+<!-- 2 오늘의 결과물 -->
+<section class="slide" data-title="오늘 만들 결과물">
+  <div class="panel">
+    <div class="topbar"><div class="brand"><span class="sq"></span><b>VIBE CODING</b></div><div>오늘의 목표</div></div>
+    <main class="content">
+      <div class="ghost">01</div>
+      <div class="kicker">TODAY'S OUTPUT</div>
+      <h1>설명을 듣고 끝나지 않고<br/><mark>실제 결과물</mark>을 만들어 갑니다</h1>
+      <div class="grid three lower">
+        <div class="card"><span class="meta">실습 A</span><h3>HTML 업무도구</h3><p>엑셀에서 복사한 명단을 붙여넣고 이메일·전화번호 오류와 중복을 검사하는 도구를 만들어 링크로 공유합니다.</p></div>
+        <div class="card"><span class="meta">실습 B-1</span><h3>Console 자동화</h3><p>개발자 도구 콘솔에서 폼 채우기·다운로드·페이지 분석 코드를 직접 실행해봅니다.</p></div>
+        <div class="card dark"><span class="meta">실습 B-2</span><h3>크롬 확장 프로그램</h3><p>페이지를 분석·요약해주는 나만의 확장 프로그램을 만들어 브라우저에 등록합니다.</p></div>
+      </div>
+      <div class="side-note">성공 기준은 “완벽한 프로그램”이 아니라, <b>내가 설명한 기능이 실제로 실행되고 다른 사람에게 보여줄 수 있는 상태</b>입니다.</div>
+    </main>
+    <div class="footer"><div></div><div><b>02</b></div></div>
+  </div>
+</section>
+
+<!-- 3 흐름 -->
+<section class="slide" data-title="180분 강의 흐름">
+  <div class="panel">
+    <div class="topbar"><div class="brand"><span class="sq"></span><b>VIBE CODING</b></div><div>운영안</div></div>
+    <main class="content">
+      <div class="kicker">180분 운영안</div>
+      <h1>흐름은 <mark>이론 → HTML → Console → 확장</mark> 순입니다</h1>
+      <div class="timeline">
+        <div><b>00–30</b><h3>이론</h3><p>바이브코딩 개념·방법·도구, 실무 사례, 메타 프롬프트</p><div class="dur">30분</div></div>
+        <div><b>30–100</b><h3>실습 A</h3><p>HTML 도구 만들기 → 수정 → Netlify 배포 → 서로 공유</p><div class="dur">70분</div></div>
+        <div><b>100–170</b><h3>실습 B</h3><p>개발자 도구 Console 4대 유형 → 페이지 분석·요약 확장 프로그램 등록</p><div class="dur">70분</div></div>
+        <div><b>170–180</b><h3>마무리</h3><p>내 업무에 적용하는 법, 기억할 세 가지</p><div class="dur">10분</div></div>
+      </div>
+      <div class="side-note ok">중간중간 10분 내외 휴식을 넣어 운영합니다. 실습 진도가 느려지면 슬라이드보다 <b>직접 만들어보는 시간</b>을 우선합니다.</div>
+    </main>
+    <div class="footer"><div></div><div><b>03</b></div></div>
+  </div>
+</section>
+
+<!-- 4 코딩 수업이 아니다 -->
+<section class="slide" data-title="오늘 강의는 코딩 수업이 아닙니다">
+  <div class="panel">
+    <div class="topbar"><div class="brand"><span class="sq"></span><b>VIBE CODING</b></div><div>핵심 메시지</div></div>
+    <main class="content">
+      <div class="ghost">02</div>
+      <div class="kicker">OPENING MESSAGE</div>
+      <h1>오늘 강의는<br/><mark>코딩 수업이 아닙니다</mark></h1>
+      <div class="grid two lower" style="grid-template-columns:1.15fr .85fr">
+        <div>
+          <p class="lead">코드를 외우는 시간이 아니라, <b>AI에게 업무를 설명하고 도구로 바꾸는 과정</b>을 경험하는 시간입니다.</p>
+          <div class="rule"></div>
+          <ul class="big-list small-list">
+            <li>코드는 AI가 작성합니다.</li>
+            <li>문제와 조건은 현업 담당자가 설명합니다.</li>
+            <li>처음 결과물은 언제나 초안입니다.</li>
+            <li>실행해보고 다시 고치는 과정이 핵심입니다.</li>
+          </ul>
+        </div>
+        <div class="card dark" style="justify-content:center;min-height:100%">
+          <span class="meta">오늘 가져갈 한 문장</span>
+          <h3 style="font-size:29px;line-height:1.3">현업 담당자는<br/>가장 좋은<br/><mark>도구 기획자</mark>입니다</h3>
+          <p style="margin-top:10px">내 업무의 불편함을 가장 잘 아는 사람이 가장 좋은 요청을 만들 수 있습니다.</p>
+        </div>
+      </div>
+    </main>
+    <div class="footer"><div></div><div><b>04</b></div></div>
+  </div>
+</section>
+
+<!-- 5 SECTION: 이론 -->
+<section class="slide section" data-title="PART 1 · 바이브코딩이란">
+  <div class="panel">
+    <div class="topbar"><div class="brand"><span class="sq"></span><b>VIBE CODING</b></div><div>PART 01 · THEORY</div></div>
+    <div style="margin:auto 0">
+      <div class="tlabel">PART 01 · 이론 · 30분</div>
+      <div class="num">01</div>
+      <h1>바이브코딩이란<br/>무엇인가</h1>
+      <p class="desc">코드를 직접 치는 것이 아니라, AI와 대화하며 업무도구를 만드는 방식. 왜 비개발자도 만들 수 있는지 먼저 이해합니다.</p>
+    </div>
+    <div class="footer"><div></div><div><b>05</b></div></div>
+  </div>
+</section>
+
+<!-- 6 정의 -->
+<section class="slide" data-title="바이브코딩은 대화형 도구 제작 방식">
+  <div class="panel">
+    <div class="topbar"><div class="brand"><span class="sq"></span><b>VIBE CODING</b></div><div>정의</div></div>
+    <main class="content">
+      <div class="kicker">DEFINITION</div>
+      <h1>바이브코딩은 코드가 아니라<br/><mark>대화로 만드는 방식</mark>입니다</h1>
+      <div class="compare">
+        <div><small>기존 방식</small><h3>직접 코드를<br/>작성한다</h3><p>문법을 배우고, 한 줄씩 코드를 쓰고, 오류를 스스로 찾습니다. 배우는 데 오래 걸리고 진입장벽이 높습니다.</p></div>
+        <div class="hi"><small>바이브코딩</small><h3>말로 설명하고<br/>AI가 코드를 쓴다</h3><p>“이런 도구가 필요해”라고 설명하면 AI가 코드를 만듭니다. 우리는 실행해보고 다시 고쳐달라고 말합니다.</p></div>
+      </div>
+    </main>
+    <div class="footer"><div></div><div><b>06</b></div></div>
+  </div>
+</section>
+
+<!-- 7 왜 가능한가 -->
+<section class="slide" data-title="AI는 코드를 꺼내주는 도구입니다">
+  <div class="panel">
+    <div class="topbar"><div class="brand"><span class="sq"></span><b>VIBE CODING</b></div><div>왜 가능한가</div></div>
+    <main class="content">
+      <div class="ghost">03</div>
+      <div class="kicker">WHY IT WORKS</div>
+      <h1>AI는 필요한 코드를<br/><mark>대신 꺼내주는 도구</mark>입니다</h1>
+      <div class="grid three lower">
+        <div class="card"><span class="meta">역할 1</span><h3>번역가</h3><p>“명단 오류를 검사하고 싶어”라는 업무 언어를 실제 코드로 번역해줍니다.</p></div>
+        <div class="card"><span class="meta">역할 2</span><h3>초안 작가</h3><p>처음부터 완벽하진 않지만, 바로 실행해볼 수 있는 첫 결과물을 빠르게 만들어줍니다.</p></div>
+        <div class="card"><span class="meta">역할 3</span><h3>수리 기사</h3><p>“여기가 안 돼”라고 말하면 원인을 설명하고 고친 코드를 다시 줍니다.</p></div>
+      </div>
+      <div class="side-note">그래서 필요한 능력은 코딩 실력이 아니라 <b>내 업무를 정확히 설명하는 능력</b>입니다.</div>
+    </main>
+    <div class="footer"><div></div><div><b>07</b></div></div>
+  </div>
+</section>
+
+<!-- 방법 네 갈래 -->
+<section class="slide" data-title="바이브코딩 방법은 크게 네 갈래">
+  <div class="panel">
+    <div class="topbar"><div class="brand"><span class="sq"></span><b>VIBE CODING</b></div><div>방법 지도</div></div>
+    <main class="content">
+      <div class="ghost">04</div>
+      <div class="kicker">METHODS</div>
+      <h1>바이브코딩 방법은<br/>크게 <mark>네 갈래</mark>가 있습니다</h1>
+      <div class="grid four lower">
+        <div class="card"><span class="meta">방법 01</span><h3>채팅형 AI</h3><p>대화로 코드 초안을 받습니다. 가장 쉽고 오늘 실습의 기본입니다.<br/><b>ChatGPT · Claude · Gemini</b></p></div>
+        <div class="card"><span class="meta">방법 02</span><h3>에디터 통합형</h3><p>편집기 안에서 AI가 함께 코드를 씁니다. 조금 더 본격적인 개발용.<br/><b>Cursor · Copilot</b></p></div>
+        <div class="card"><span class="meta">방법 03</span><h3>노코드 빌더</h3><p>코드 파일 없이 말로 웹·앱을 생성합니다. 소개·공유 페이지에 좋습니다.<br/><b>Lovable · Bolt · v0</b></p></div>
+        <div class="card dark"><span class="meta">방법 04</span><h3>브라우저 내장</h3><p>설치 없이 개발자 도구로 즉시 실행하고 확장으로 묶습니다.<br/><b>DevTools · 확장 프로그램</b></p></div>
+      </div>
+      <div class="side-note">오늘은 이 중 <b>채팅형 AI</b>와 <b>브라우저 내장</b> 방법을 직접 해봅니다. 나머지는 필요할 때 같은 원리로 확장하면 됩니다.</div>
+    </main>
+    <div class="footer"><div></div><div><b>07</b></div></div>
+  </div>
+</section>
+
+<!-- 도구는 역할로 -->
+<section class="slide tight" data-title="도구는 이름보다 역할로 기억합니다">
+  <div class="panel">
+    <div class="topbar"><div class="brand"><span class="sq"></span><b>VIBE CODING</b></div><div>도구 지도</div></div>
+    <main class="content">
+      <div class="kicker">TOOLS MAP</div>
+      <h1>도구는 이름보다<br/><mark>역할</mark>로 기억하면 됩니다</h1>
+      <div class="tablewrap dense">
+        <table>
+          <thead><tr><th>역할</th><th>대표 도구</th><th>오늘 강의에서의 쓰임</th></tr></thead>
+          <tbody>
+            <tr><td>코드 초안 생성</td><td>ChatGPT · Claude · Gemini</td><td>말로 요청하면 HTML·JS 코드 초안을 만들어 줍니다</td></tr>
+            <tr><td>코드 저장·실행</td><td>브라우저 · 메모장 · VS Code</td><td>AI가 만든 결과물을 실제로 열어 실행하고 오류를 확인합니다</td></tr>
+            <tr><td>브라우저 자동화</td><td>개발자 도구 Console</td><td>설치 없이 페이지에서 바로 코드를 실행합니다</td></tr>
+            <tr><td>기능 패키징</td><td>크롬 확장 프로그램</td><td>만든 기능을 버튼 하나로 실행하도록 묶습니다</td></tr>
+            <tr><td>웹사이트 생성</td><td>Lovable · Bolt</td><td>코드 파일 없이 말로 소개·공유 페이지를 만듭니다</td></tr>
+            <tr><td>결과물 공유</td><td>Netlify · GitHub Pages</td><td>완성한 파일을 링크로 공유합니다</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="side-note">도구를 많이 외울 필요는 없습니다. <b>“무엇을 하려는가”에 맞는 역할</b>만 고르면 됩니다.</div>
+    </main>
+    <div class="footer"><div></div><div><b>07</b></div></div>
+  </div>
+</section>
+
+<!-- 8 완벽하지 않다 -->
+<section class="slide" data-title="AI는 처음부터 완벽하지 않습니다">
+  <div class="panel">
+    <div class="topbar"><div class="brand"><span class="sq"></span><b>VIBE CODING</b></div><div>현실 감각</div></div>
+    <main class="content">
+      <div class="kicker">REALITY CHECK</div>
+      <h1>AI는 똑똑하지만<br/><mark>처음부터 완벽하지 않습니다</mark></h1>
+      <div class="flow three">
+        <div><div class="n">1</div><h3>초안</h3><p>일단 실행되는 첫 버전이 나옵니다. 부족한 점이 반드시 있습니다.</p></div>
+        <div><div class="n">2</div><h3>실행·확인</h3><p>직접 열어보고 되는 것과 안 되는 것을 나눕니다.</p></div>
+        <div><div class="n">3</div><h3>수정 반복</h3><p>구체적으로 다시 설명하면 점점 좋아집니다.</p></div>
+      </div>
+      <div class="side-note ok">한 번에 완성하는 사람이 잘하는 게 아니라, <b>실행해보고 다시 요청하는 사람</b>이 바이브코딩을 잘하는 사람입니다.</div>
+    </main>
+    <div class="footer"><div></div><div><b>08</b></div></div>
+  </div>
+</section>
+
+<!-- 영상: AI가 완벽하지 않다 -->
+<section class="slide dark-slide" data-title="영상 · AI가 늘 정답을 주는 건 아닙니다">
+  <div class="panel">
+    <div class="topbar"><div class="brand"><span class="sq"></span><b>VIBE CODING</b></div><div>잠깐, 영상 한 편</div></div>
+    <main class="content">
+      <div class="kicker">VIDEO</div>
+      <h1>AI가 늘 <mark>완벽한 정답</mark>을 주는 건 아닙니다</h1>
+      <div class="grid two lower" style="grid-template-columns:1.25fr .75fr;align-items:center">
+        <div>
+          <p class="lead" style="color:#e6e6e2">가끔은 엉뚱하고 웃긴 답을 자신 있게 내놓기도 합니다. 그래서 <b>결과를 그대로 믿지 않는 것</b>이 중요합니다.</p>
+          <ul class="big-list small-list" style="color:#e8e8e4;margin-top:6px">
+            <li>어색하거나 틀린 답이 나올 수 있습니다.</li>
+            <li>실행해보고 이상하면 다시 요청하면 됩니다.</li>
+            <li>‘고쳐 달라’고 말하는 것도 실력입니다.</li>
+          </ul>
+        </div>
+        <div style="display:flex;flex-direction:column;align-items:center">
+          <a href="https://youtube.com/shorts/kResaqcB3Uk" target="_blank" rel="noopener" style="display:block;width:220px;height:391px;border-radius:12px;overflow:hidden;position:relative;background:#000;box-shadow:0 16px 40px rgba(0,0,0,.35);border:1px solid rgba(255,255,255,.14)">
+            <img src="https://img.youtube.com/vi/kResaqcB3Uk/hqdefault.jpg" alt="영상 미리보기" style="width:100%;height:100%;object-fit:cover;opacity:.92"/>
+            <span style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center">
+              <span style="width:70px;height:70px;border-radius:50%;background:rgba(0,0,0,.55);border:2px solid rgba(255,255,255,.9);display:flex;align-items:center;justify-content:center">
+                <span style="width:0;height:0;border-left:22px solid #fff;border-top:14px solid transparent;border-bottom:14px solid transparent;margin-left:6px"></span>
+              </span>
+            </span>
+          </a>
+          <div style="font-size:13px;color:#c9c9c4;margin-top:12px;font-weight:600">▶ 클릭하면 <span style="color:var(--yellow)">유튜브에서 재생</span>됩니다</div>
+        </div>
+      </div>
+    </main>
+    <div class="footer"><div></div><div><b>0</b></div></div>
+  </div>
+</section>
+
+<!-- 9 우리는 기획자 -->
+<section class="slide dark-slide" data-title="우리는 코더가 아니라 기획자입니다">
+  <div class="panel">
+    <div class="topbar"><div class="brand"><span class="sq"></span><b>VIBE CODING</b></div><div>역할 전환</div></div>
+    <main class="content">
+      <div class="kicker">MINDSET</div>
+      <h1>우리는 코더가 아니라<br/><mark>기획자이자 팀장</mark>입니다</h1>
+      <div class="grid two lower" style="grid-template-columns:1fr 1fr">
+        <div class="card" style="background:#1f1f1f;border-color:#2c2c2c;color:#f4f4f2"><span class="meta">팀장의 일</span><h3 style="color:#f6f6f4">무엇을 만들지 정한다</h3><p style="color:#b9b9b4">목적, 입력, 출력, 조건을 정리해 AI에게 명확히 지시합니다.</p></div>
+        <div class="card" style="background:#1f1f1f;border-color:#2c2c2c;color:#f4f4f2"><span class="meta">팀장의 일</span><h3 style="color:#f6f6f4">결과를 검수한다</h3><p style="color:#b9b9b4">돌려보고 부족한 점을 짚어 다시 요청합니다. 코드를 직접 쓰지 않습니다.</p></div>
+      </div>
+      <div class="side-note" style="background:#1f1f1f;color:#e8e8e4;border-left-color:var(--yellow)">AI에게는 <b>새 직원에게 업무를 인수인계하듯이</b> 맥락과 함께 설명하는 것이 핵심입니다.</div>
+    </main>
+    <div class="footer"><div></div><div><b>09</b></div></div>
+  </div>
+</section>
+
+<!-- 10 실무 사례 맛보기 -->
+<section class="slide" data-title="실무 행정 혁신 사례">
+  <div class="panel">
+    <div class="topbar"><div class="brand"><span class="sq"></span><b>VIBE CODING</b></div><div>사례 맛보기</div></div>
+    <main class="content">
+      <div class="ghost">04</div>
+      <div class="kicker">REAL CASES</div>
+      <h1>이미 <mark>우리 교육청 교직원</mark>이<br/>직접 만들어 쓰고 있습니다</h1>
+      <div class="grid three lower">
+        <div class="card"><span class="meta">브라우저 도구</span><h3>에듀파인·나이스 도우미</h3><p>에듀파인·나이스 화면을 업무에 맞게 바꿔 편하게 만들어 주는 도구.</p></div>
+        <div class="card"><span class="meta">화면 통합</span><h3>결재함 모아보기</h3><p>여기저기 흩어진 결재함을 한 화면에 모아서 봅니다.</p></div>
+        <div class="card dark"><span class="meta">서식 자동화</span><h3>견적서 → 에듀파인 변환기</h3><p>오픈마켓 장바구니·견적서를 에듀파인 서식으로 자동 변환(지마켓·옥션·11번가).</p></div>
+      </div>
+      <div class="side-note">모두 전북교육청 <b>‘교직원 제작 도구 게시판’</b>에 실제로 공유된 도구입니다. 거창한 시스템이 아니라, 이미 이렇게 스스로 문제를 해결하고 있습니다.</div>
+    </main>
+    <div class="footer"><div></div><div><b>10</b></div></div>
+  </div>
+</section>
+
+<!-- 11 성공 공식 3단계 -->
+<section class="slide" data-title="바이브코딩 성공 공식 3단계">
+  <div class="panel">
+    <div class="topbar"><div class="brand"><span class="sq"></span><b>VIBE CODING</b></div><div>성공 공식</div></div>
+    <main class="content">
+      <div class="kicker">SUCCESS FORMULA</div>
+      <h1>기억할 것은<br/><mark>작게 → 말하고 → 고친다</mark></h1>
+      <div class="flow three">
+        <div><div class="n">1</div><h3>작게 시작</h3><p>처음부터 완성품을 꿈꾸지 않습니다. 한 파일, 한 기능으로 시작합니다.</p></div>
+        <div><div class="n">2</div><h3>맥락과 함께 요청</h3><p>업무 상황을 함께 주면 결과가 달라집니다. 인수인계하듯 설명합니다.</p></div>
+        <div><div class="n">3</div><h3>실행하고 고친다</h3><p>에러는 포기 신호가 아니라 대화 재료입니다. 관찰·설명·수정을 반복합니다.</p></div>
+      </div>
+      <div class="side-note ok">이 세 단계는 오늘 두 실습 내내 그대로 반복됩니다. 지금부터 직접 해봅니다.</div>
+    </main>
+    <div class="footer"><div></div><div><b>11</b></div></div>
+  </div>
+</section>
+
+<!-- 메타 프롬프트란 -->
+<section class="slide" data-title="메타 프롬프트는 프롬프트를 만드는 프롬프트">
+  <div class="panel">
+    <div class="topbar"><div class="brand"><span class="sq"></span><b>VIBE CODING</b></div><div>메타 프롬프트 · 정의</div></div>
+    <main class="content">
+      <div class="kicker">DEFINITION</div>
+      <h1>메타 프롬프트는<br/><mark>프롬프트를 만드는 프롬프트</mark>입니다</h1>
+      <div class="compare">
+        <div><small>일반 프롬프트</small><h3>바로 결과물을<br/>요청한다</h3><p>“이메일·전화번호 검사기 만들어줘.”<br/>요구사항이 부족하면 결과물이 엉뚱해질 수 있습니다.</p></div>
+        <div class="hi"><small>메타 프롬프트</small><h3>먼저 요청문을<br/>설계한다</h3><p>“이 도구를 만들기 위한 좋은 개발 요청문을 만들어줘.”<br/>입력·출력·예외·보안을 정리한 뒤 코드를 요청합니다.</p></div>
+      </div>
+    </main>
+    <div class="footer"><div></div><div><b>15</b></div></div>
+  </div>
+</section>
+
+<!-- 메타 프롬프트 왜 필요 -->
+<section class="slide" data-title="어려운 것은 코드가 아니라 무엇을 요청할지">
+  <div class="panel">
+    <div class="topbar"><div class="brand"><span class="sq"></span><b>VIBE CODING</b></div><div>왜 필요한가</div></div>
+    <main class="content">
+      <div class="ghost">06</div>
+      <div class="kicker">WHY META PROMPT</div>
+      <h1>어려운 건 코드가 아니라<br/><mark>무엇을 요청할지</mark>입니다</h1>
+      <div class="checklist">
+        <div><b>입력값을 빠뜨림</b><span>엑셀 붙여넣기인지, URL인지, 파일인지 명확하지 않음</span></div>
+        <div><b>출력값을 빠뜨림</b><span>화면 표인지, 파일인지, 복사 문구인지 정하지 않음</span></div>
+        <div><b>실행 환경을 빠뜨림</b><span>HTML인지, 확장 프로그램인지, 웹사이트인지 불명확함</span></div>
+        <div><b>예외 처리를 빠뜨림</b><span>빈 값, 중복, 오류 같은 상황을 말하지 않음</span></div>
+        <div><b>보안 조건을 빠뜨림</b><span>개인정보·내부자료 사용 금지 조건을 명시하지 않음</span></div>
+        <div><b>사용 대상을 빠뜨림</b><span>나만 쓸지, 부서원에게 공유할지 정하지 않음</span></div>
+      </div>
+      <div class="side-note">메타 프롬프트는 이렇게 빠뜨리는 것들을 <b>AI가 먼저 질문해 채워주게</b> 합니다.</div>
+    </main>
+    <div class="footer"><div></div><div><b>16</b></div></div>
+  </div>
+</section>
+
+<!-- 메타 프롬프트 작성 공식 -->
+<section class="slide tight" data-title="좋은 요청문은 업무 지시서처럼 씁니다">
+  <div class="panel">
+    <div class="topbar"><div class="brand"><span class="sq"></span><b>VIBE CODING</b></div><div>작성 공식</div></div>
+    <main class="content">
+      <div class="kicker">PROMPT FORMULA</div>
+      <h1>좋은 요청문은<br/><mark>업무 지시서</mark>처럼 씁니다</h1>
+      <div class="flow six">
+        <div><div class="n">1</div><h3>역할</h3><p>너는 어떤 도우미인가?</p></div>
+        <div><div class="n">2</div><h3>목적</h3><p>무엇을 해결하려는가?</p></div>
+        <div><div class="n">3</div><h3>입력</h3><p>무엇을 넣는가?</p></div>
+        <div><div class="n">4</div><h3>처리</h3><p>어떤 기능이 필요한가?</p></div>
+        <div><div class="n">5</div><h3>출력</h3><p>어떤 형태로 보여줄까?</p></div>
+        <div><div class="n">6</div><h3>조건</h3><p>환경·예외·보안은?</p></div>
+      </div>
+      <div class="mini-code">나는 [업무 담당자]이고, [문제]를 해결하고 싶어.
+입력값은 [무엇]이고, 결과는 [어떤 형태]로 보여주면 좋겠어.
+사용 환경은 [HTML / 확장 프로그램 / 웹사이트]이고, 보안상 [주의사항]을 지켜줘.</div>
+    </main>
+    <div class="footer"><div></div><div><b>17</b></div></div>
+  </div>
+</section>
+
+<!-- 15 복사용 메타 프롬프트 -->
+<section class="slide prompt-slide" data-title="복사용 메타 프롬프트">
+  <div class="panel">
+    <div class="topbar"><div class="brand"><span class="sq"></span><b>VIBE CODING</b></div><div>복사용 프롬프트 01</div></div>
+    <main class="content">
+      <div class="kicker">COPY PROMPT 01 · 메타 프롬프트</div>
+      <h1>먼저 <mark>좋은 요청문</mark>부터 AI에게 만들게 합니다</h1>
+      <div class="prompt-layout">
+        <div class="prompt-info">
+          <h3>사용 시점</h3>
+          <p>도구를 만들기 전, 바로 코드를 시키지 않고 좋은 개발 요청문부터 만들게 합니다.</p>
+          <p>AI가 빠진 조건을 되물어주고, 마지막에 붙여넣을 최종 프롬프트를 만들어줍니다.</p>
+          <div class="badges"><span class="badge y">요구사항 정리</span><span class="badge">질문 생성</span><span class="badge dark">최종 프롬프트</span></div>
+        </div>
+        <div class="prompt-box">
+          <header><b>META PROMPT</b><button class="copy-btn" onclick="copyPrompt(this)">복사</button></header>
+          <pre class="prompt-text">너는 업무도구 제작을 위한 메타 프롬프트 작성 도우미야.
+
+나는 코딩 초보자이고, AI를 활용해서 작은 업무도구를 만들고 싶어.
+하지만 처음부터 어떻게 요청해야 할지 잘 모르겠어.
+
+내가 만들고 싶은 도구를 설명하면, 너는 다음 순서로 도와줘.
+
+1. 내가 만들고 싶은 도구의 목적을 정리해줘.
+2. 입력값, 처리 과정, 출력 결과를 구분해서 정리해줘.
+3. 실행 환경을 정리해줘. (HTML / 파이썬 / 확장 프로그램 / 웹사이트)
+4. 빠진 조건이 있으면 나에게 질문해줘.
+5. 개인정보, 내부자료, 보안상 주의할 점을 확인해줘.
+6. 마지막에 다른 AI 채팅창에 그대로 붙여넣을 최종 프롬프트를 작성해줘.
+
+최종 프롬프트는 다음 형식으로 만들어줘.
+- 역할 부여 / 도구의 목적 / 입력값 / 주요 기능 / 출력 결과
+- 디자인·사용성 조건 / 실행 환경 / 예외 처리 / 보안 주의사항 / 전체 코드 제공 요청
+
+이제 내가 만들고 싶은 도구를 설명할게.</pre>
+        </div>
+      </div>
+    </main>
+    <div class="footer"><div></div><div><b>15</b></div></div>
+  </div>
+</section>
+
+<!-- SECTION 실습 A -->
+<section class="slide section" data-title="PART 2 · HTML 업무도구 실습">
+  <div class="panel">
+    <div class="topbar"><div class="brand"><span class="sq"></span><b>VIBE CODING</b></div><div>PART 02 · PRACTICE A</div></div>
+    <div style="margin:auto 0">
+      <div class="tlabel">PART 02 · 실습 A · 70분</div>
+      <div class="num">02</div>
+      <h1>HTML 업무도구를<br/>만들고 공유합니다</h1>
+      <p class="desc">폴더의 실습자료.xlsx(1000명 명단)를 붙여넣어 이메일·전화번호의 오류·중복 120건을 찾는 도구를 만듭니다. 핵심은 HTML 문법이 아니라 AI에게 검사 규칙을 정확히 설명하는 경험입니다.</p>
+    </div>
+    <div class="footer"><div></div><div><b>0</b></div></div>
+  </div>
+</section>
+
+<!-- HTML이란 -->
+<section class="slide" data-title="HTML은 웹페이지를 만드는 언어">
+  <div class="panel">
+    <div class="topbar"><div class="brand"><span class="sq"></span><b>VIBE CODING</b></div><div>HTML 기초</div></div>
+    <main class="content">
+      <div class="ghost">&lt;/&gt;</div>
+      <div class="kicker">WHAT IS HTML</div>
+      <h1>HTML은 <mark>웹페이지를 만드는</mark> 언어입니다</h1>
+      <p class="lead">브라우저가 읽어서 화면으로 보여주는 문서입니다. 특별한 프로그램 없이 메모장으로 작성해 파일 하나로 저장하면, 더블클릭만으로 실행됩니다.</p>
+      <div class="grid three lower">
+        <div class="card"><span class="meta">어디서나 실행</span><h3>브라우저만 있으면</h3><p>크롬·엣지 등 브라우저에서 파일을 열면 바로 화면이 나옵니다.</p></div>
+        <div class="card"><span class="meta">설치 불필요</span><h3>파일 하나면 끝</h3><p>메모장·VS Code로 작성해 index.html로 저장하면 됩니다.</p></div>
+        <div class="card dark"><span class="meta">오늘의 결과물</span><h3>명단 검사기</h3><p>우리가 만들 도구도 결국 HTML 파일 하나입니다.</p></div>
+      </div>
+      <div class="side-note ok">참고로 지금 보고 있는 <b>이 강의안도 HTML로 만들어졌습니다.</b></div>
+    </main>
+    <div class="footer"><div></div><div><b>0</b></div></div>
+  </div>
+</section>
+
+<!-- HTML CSS JS 역할 -->
+<section class="slide" data-title="웹페이지는 세 가지가 함께 만듭니다">
+  <div class="panel">
+    <div class="topbar"><div class="brand"><span class="sq"></span><b>VIBE CODING</b></div><div>HTML · CSS · JS</div></div>
+    <main class="content">
+      <div class="kicker">HTML · CSS · JAVASCRIPT</div>
+      <h1>웹페이지는 <mark>세 가지</mark>가 함께 만듭니다</h1>
+      <div class="grid three lower">
+        <div class="card"><span class="meta">HTML</span><h3>뼈대 · 구조</h3><p>제목·문단·표·버튼·입력칸처럼 <b>‘무엇이 있는지’</b>를 담습니다.</p></div>
+        <div class="card"><span class="meta">CSS</span><h3>디자인 · 스타일</h3><p>색·크기·간격·배치처럼 <b>‘어떻게 보이는지’</b>를 정합니다.</p></div>
+        <div class="card dark"><span class="meta">JavaScript</span><h3>동작 · 기능</h3><p>버튼 클릭·계산·검사처럼 <b>‘무엇을 하는지’</b>를 담당합니다.</p></div>
+      </div>
+      <div class="side-note">집에 비유하면 <b>HTML은 뼈대와 방 배치</b>, <b>CSS는 인테리어와 색</b>, <b>JavaScript는 전기·수도</b>처럼 실제로 작동하게 하는 부분입니다.</div>
+    </main>
+    <div class="footer"><div></div><div><b>0</b></div></div>
+  </div>
+</section>
+
+<!-- HTML 기본 구조 -->
+<section class="slide tight" data-title="HTML은 태그로 구조를 만듭니다">
+  <div class="panel">
+    <div class="topbar"><div class="brand"><span class="sq"></span><b>VIBE CODING</b></div><div>기본 구조</div></div>
+    <main class="content">
+      <div class="kicker">STRUCTURE</div>
+      <h1>HTML은 <mark>태그</mark>로 구조를 만듭니다</h1>
+      <div class="grid two lower" style="grid-template-columns:1.25fr .75fr">
+        <div class="codecard"><div class="h">index.html 기본 뼈대</div><pre>&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+  &lt;head&gt;
+    &lt;title&gt;내 검사 도구&lt;/title&gt;
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;h1&gt;명단 검사기&lt;/h1&gt;
+    &lt;textarea&gt;&lt;/textarea&gt;
+    &lt;button&gt;검사하기&lt;/button&gt;
+  &lt;/body&gt;
+&lt;/html&gt;</pre></div>
+        <div>
+          <div class="card"><span class="meta">태그</span><h3 style="font-size:21px">&lt;여는&gt;내용&lt;/닫는&gt;</h3><p>대부분의 요소는 여는 태그와 닫는 태그가 쌍을 이룹니다.</p></div>
+          <div class="card" style="margin-top:16px"><span class="meta">head / body</span><h3 style="font-size:21px">설정과 화면</h3><p><b>head</b>는 제목·설정, <b>body</b>는 실제로 화면에 보이는 내용입니다.</p></div>
+        </div>
+      </div>
+      <div class="side-note">외울 필요는 없습니다. 이 구조는 <b>AI가 만들어 주고</b>, 우리는 무엇을 넣을지만 설명하면 됩니다.</div>
+    </main>
+    <div class="footer"><div></div><div><b>0</b></div></div>
+  </div>
+</section>
+
+<!-- HTML로 할 수 있는 것 -->
+<section class="slide" data-title="HTML로 이런 것들을 만듭니다">
+  <div class="panel">
+    <div class="topbar"><div class="brand"><span class="sq"></span><b>VIBE CODING</b></div><div>활용 범위</div></div>
+    <main class="content">
+      <div class="kicker">WHAT YOU CAN BUILD</div>
+      <h1>HTML로 <mark>이런 것들</mark>을 만듭니다</h1>
+      <div class="grid four lower">
+        <div class="card"><span class="meta">웹 도구</span><h3>입력 → 결과</h3><p>명단 검사기, 계산기, 변환기처럼 업무를 돕는 작은 도구.</p></div>
+        <div class="card"><span class="meta">웹사이트</span><h3>안내 · 소개</h3><p>부서 안내, 링크 모음, 행사 소개 페이지.</p></div>
+        <div class="card"><span class="meta">동적 문서</span><h3>매뉴얼 · 보고서</h3><p>클릭하면 펼쳐지는 매뉴얼, 인터랙티브 보고서.</p></div>
+        <div class="card dark"><span class="meta">발표자료</span><h3>PPT 대신</h3><p>이 강의안처럼 슬라이드 발표에도 씁니다.</p></div>
+      </div>
+      <div class="side-note ok">오늘은 이 중 <b>‘웹 도구’(명단 검사기)</b>를 직접 만들어봅니다.</div>
+    </main>
+    <div class="footer"><div></div><div><b>0</b></div></div>
+  </div>
+</section>
+
+<!-- 실습 A 문제 상황 -->
+<section class="slide" data-title="1000명 명단에서 숨은 오류를 찾습니다">
+  <div class="panel">
+    <div class="topbar"><div class="brand"><span class="sq"></span><b>VIBE CODING</b></div><div>실습 A · 문제 상황</div></div>
+    <main class="content">
+      <div class="ghost">A</div>
+      <div class="kicker">PROBLEM</div>
+      <h1>1000명 명단에서<br/><mark>숨은 오류</mark>를 눈으로 찾을 수 있을까요?</h1>
+      <div class="grid three lower">
+        <div class="card"><span class="meta">데이터</span><h3>실습자료.xlsx</h3><p>1000명 명단입니다. 소속·부서·직급·성명·이메일·전화번호가 들어 있습니다.</p></div>
+        <div class="card"><span class="meta">숨은 오류</span><h3>의도적으로 심은 120건</h3><p>이메일·전화번호에 형식 오류·공란·중복이 섞여 있습니다.</p></div>
+        <div class="card dark"><span class="meta">채점</span><h3>오류정답 시트</h3><p>내가 만든 도구가 이 120건을 몇 건이나 잡아내는지 바로 확인합니다.</p></div>
+      </div>
+      <div class="side-note">사람이 1000줄을 일일이 보면 놓치기 쉽고 오래 걸립니다. <b>검사 도구를 AI로 만들어 한 번에 잡아냅니다.</b></div>
+    </main>
+    <div class="footer"><div></div><div><b>0</b></div></div>
+  </div>
+</section>
+
+<!-- 실습 A 검사 유형 6가지 -->
+<section class="slide" data-title="잡아내야 할 여섯 가지 유형">
+  <div class="panel">
+    <div class="topbar"><div class="brand"><span class="sq"></span><b>VIBE CODING</b></div><div>검사 항목</div></div>
+    <main class="content">
+      <div class="kicker">WHAT TO DETECT</div>
+      <h1>잡아내야 할 <mark>여섯 가지</mark> 유형</h1>
+      <div class="checklist">
+        <div><b>형식 오류</b><span>이메일에 @가 없음, 전화번호 자리수·형식이 이상함</span></div>
+        <div><b>공란</b><span>이메일이나 전화번호가 비어 있음</span></div>
+        <div><b>완전 중복</b><span>같은 이메일·전화번호가 그대로 반복됨</span></div>
+        <div><b>대소문자 중복</b><span>User@… 와 user@… 를 같은 값으로 봐야 함</span></div>
+        <div><b>앞뒤 공백 중복</b><span>값 앞뒤 공백만 다르고 실제로는 같은 값</span></div>
+        <div><b>정규화 중복</b><span>010-1234-5678 과 01012345678 처럼 형식만 다른 같은 번호</span></div>
+      </div>
+      <div class="side-note">이 여섯 가지를 <b>AI에게 정확히 설명하는 것</b>이 이번 실습의 핵심입니다. 단순 중복만 잡으면 절반은 놓칩니다.</div>
+    </main>
+    <div class="footer"><div></div><div><b>0</b></div></div>
+  </div>
+</section>
+
+<!-- 실습 A 메타 프롬프트 예시 -->
+<section class="slide" data-title="메타 프롬프트에 이 도구를 이렇게 설명합니다">
+  <div class="panel">
+    <div class="topbar"><div class="brand"><span class="sq"></span><b>VIBE CODING</b></div><div>메타 프롬프트 활용</div></div>
+    <main class="content">
+      <div class="kicker">USE META PROMPT</div>
+      <h1>메타 프롬프트에 <mark>이 도구를 이렇게 설명</mark>합니다</h1>
+      <div class="grid two lower">
+        <div class="card"><span class="meta">내가 짧게 말하면</span><h3>한두 문장 설명</h3><p>“전북교육청 1000명 명단(성명·이메일·전화번호)에서 이메일·전화번호의 형식 오류·공란·중복을 찾는 HTML 도구를 만들고 싶어. 중복은 대소문자·공백·형식 차이까지 같은 값으로 봐줘.”</p></div>
+        <div class="card dark"><span class="meta">AI가 해줄 일</span><h3>개발 요청문 완성</h3><p>목적·입력(붙여넣기 열 구성)·처리(6가지 검사)·출력(오류 표·건수)·예외·보안을 정리해, 그대로 붙여넣을 최종 프롬프트를 만들어 줍니다.</p></div>
+      </div>
+      <div class="side-note ok">먼저 이론에서 배운 <b>메타 프롬프트</b>로 요청문을 다듬은 뒤, 아래 완성 프롬프트로 코드를 받습니다.</div>
+    </main>
+    <div class="footer"><div></div><div><b>0</b></div></div>
+  </div>
+</section>
+
+<!-- 16 HTML 도구 생성 프롬프트 -->
+<section class="slide prompt-slide" data-title="HTML 업무도구 생성 프롬프트">
+  <div class="panel">
+    <div class="topbar"><div class="brand"><span class="sq"></span><b>VIBE CODING</b></div><div>복사용 프롬프트 02</div></div>
+    <main class="content">
+      <div class="kicker">COPY PROMPT 02 · HTML 도구 생성</div>
+      <h1>이 프롬프트로 <mark>index.html 전체 코드</mark>를 받습니다</h1>
+      <div class="prompt-layout">
+        <div class="prompt-info">
+          <h3>사용 시점</h3>
+          <p>실습 A 시작. 새 AI 채팅창에 그대로 붙여넣습니다.</p>
+          <p>결과로 받은 전체 코드를 메모장/VS Code에 <b>index.html</b>로 저장합니다.</p>
+          <div class="badges"><span class="badge y">HTML</span><span class="badge">명단 붙여넣기</span><span class="badge dark">6가지 검사</span></div>
+        </div>
+        <div class="prompt-box">
+          <header><b>HTML TOOL PROMPT</b><button class="copy-btn" onclick="copyPrompt(this)">복사</button></header>
+          <pre class="prompt-text">직원 명단에서 이메일·전화번호의 오류와 중복을 찾아주는
+HTML 검사 도구를 만들고 싶어. 나는 코딩 초보자야.
+
+[입력 데이터]
+엑셀 "명단" 시트를 통째로 복사해 붙여넣어. 열 순서는
+일련번호 / 소속기관 / 소속 실·국 / 소속부서 / 직급 / 성명 / 이메일 / 전화번호 야.
+첫 줄은 머리글이고, 열은 탭으로 구분돼. 약 1000행이야.
+
+[조건]
+1. 외부 라이브러리 없이 하나의 index.html 파일로 만들어줘.
+2. 큰 붙여넣기 입력칸과 [검사하기] 버튼을 넣어줘.
+3. 이메일 열과 전화번호 열을 기준으로 다음 6가지를 검사해줘.
+   ① 형식 오류 - 이메일에 @/도메인 없음, 전화번호 자리수·형식 이상
+   ② 공란 - 이메일 또는 전화번호가 비어 있음
+   ③ 완전 중복 - 같은 값이 그대로 반복
+   ④ 대소문자 중복 - 이메일은 대소문자를 무시하고 같은 값으로 판단
+   ⑤ 앞뒤 공백 중복 - 앞뒤 공백을 제거한 뒤 같은 값이면 중복
+   ⑥ 정규화 중복 - 전화번호는 숫자만 남겨 비교(하이픈·공백 무시)
+4. 결과 표에 일련번호·성명·이메일·전화번호·검사결과·문제유형을 보여줘.
+5. 상단에 유형별 건수 요약(형식오류 N, 공란 N, 중복 N…)을 보여줘.
+6. [오류·중복만 보기] [전체 보기] [입력 지우기] 버튼을 넣어줘.
+7. 오류 행은 눈에 띄게 색으로 표시해줘.
+8. 공공기관 업무도구처럼 깔끔하게, 모바일에서도 보이게 만들어줘.
+
+초보자가 바로 저장해 실행할 수 있게 index.html 전체 코드를 한 번에 제공해줘.</pre>
+        </div>
+      </div>
+    </main>
+    <div class="footer"><div></div><div><b>16</b></div></div>
+  </div>
+</section>
+
+<!-- 17 실행·저장·공유 흐름 -->
+<section class="slide" data-title="저장하고 실행하고 공유합니다">
+  <div class="panel">
+    <div class="topbar"><div class="brand"><span class="sq"></span><b>VIBE CODING</b></div><div>실행 & 공유</div></div>
+    <main class="content">
+      <div class="kicker">RUN & SHARE</div>
+      <h1>코드를 받았다면<br/><mark>저장 → 실행 → 수정 → 공유</mark></h1>
+      <div class="flow five">
+        <div><div class="n">1</div><h3>복사</h3><p>AI가 만든 전체 HTML 코드를 복사합니다.</p></div>
+        <div><div class="n">2</div><h3>저장</h3><p>메모장/VS Code에서 index.html로 저장합니다.</p></div>
+        <div><div class="n">3</div><h3>실행</h3><p>파일을 더블클릭해 브라우저에서 열어봅니다.</p></div>
+        <div><div class="n">4</div><h3>수정</h3><p>오류·아쉬운 점을 다시 AI에게 말합니다.</p></div>
+        <div><div class="n">5</div><h3>공유</h3><p>Netlify Drop에 올려 공유 링크를 만듭니다.</p></div>
+      </div>
+      <div class="side-note">Netlify 공유는 강사가 화면으로 직접 시연합니다. <b>netlify.com/drop 에 파일을 끌어다 놓으면</b> 바로 공유 링크가 생깁니다.</div>
+    </main>
+    <div class="footer"><div></div><div><b>17</b></div></div>
+  </div>
+</section>
+
+<!-- 18 수정 프롬프트 -->
+<section class="slide prompt-slide" data-title="실행 후 수정 요청 프롬프트">
+  <div class="panel">
+    <div class="topbar"><div class="brand"><span class="sq"></span><b>VIBE CODING</b></div><div>복사용 프롬프트 03</div></div>
+    <main class="content">
+      <div class="kicker">COPY PROMPT 03 · 수정 요청</div>
+      <h1>실행해보고 <mark>고칠 점</mark>을 구체적으로 말합니다</h1>
+      <div class="prompt-layout">
+        <div class="prompt-info">
+          <h3>사용 시점</h3>
+          <p>도구가 실행되지만 화면이 불편하거나 기능을 더 좋게 만들고 싶을 때.</p>
+          <p>“전체 코드를 다시 제공해줘”를 꼭 넣어야 초보자가 편합니다.</p>
+          <div class="badges"><span class="badge y">개선</span><span class="badge dark">전체 코드 재요청</span></div>
+        </div>
+        <div class="prompt-box">
+          <header><b>HTML REVISION PROMPT</b><button class="copy-btn" onclick="copyPrompt(this)">복사</button></header>
+          <pre class="prompt-text">방금 만든 검사 도구를 실습자료로 돌려봤는데, 이렇게 개선하고 싶어.
+
+[정확도]
+1. 대소문자만 다른 이메일 중복을 놓치고 있어 → 소문자로 바꿔 비교해줘.
+2. 전화번호는 하이픈·공백을 빼고 숫자만으로 중복을 판단해줘.
+3. 값 앞뒤에 공백이 있는 경우도 같은 값으로 처리해줘.
+4. 빈 칸(공란)도 오류로 잡아줘.
+
+[보기]
+5. 오류가 있는 행을 색으로 눈에 띄게 표시해줘.
+6. 상단에 유형별 건수 요약을 보여줘.
+7. 붙여넣기 입력칸을 더 크게, 모바일에서도 보이게 해줘.
+
+기존 기능은 유지하면서 index.html 전체 코드를 다시 제공해줘.</pre>
+        </div>
+      </div>
+    </main>
+    <div class="footer"><div></div><div><b>18</b></div></div>
+  </div>
+</section>
+
+<!-- 19 오류 해결 프롬프트 -->
+<section class="slide prompt-slide" data-title="오류가 났을 때 프롬프트">
+  <div class="panel">
+    <div class="topbar"><div class="brand"><span class="sq"></span><b>VIBE CODING</b></div><div>복사용 프롬프트 04</div></div>
+    <main class="content">
+      <div class="kicker">COPY PROMPT 04 · 오류 해결</div>
+      <h1>“안 돼요”보다 <mark>상황과 메시지</mark>를 함께 줍니다</h1>
+      <div class="prompt-layout">
+        <div class="prompt-info">
+          <h3>사용 시점</h3>
+          <p>HTML 파일이나 이후 실습에서 무언가 실행되지 않을 때 공통으로 사용합니다.</p>
+          <p>무엇을·어떻게 했고·어떤 메시지가 났는지를 함께 붙여넣는 것이 핵심입니다.</p>
+          <div class="badges"><span class="badge y">에러는 대화 재료</span></div>
+        </div>
+        <div class="prompt-box">
+          <header><b>ERROR FIX PROMPT</b><button class="copy-btn" onclick="copyPrompt(this)">복사</button></header>
+          <pre class="prompt-text">프로그램을 실행했는데 문제가 생겼어.
+
+현재 상황은 다음과 같아.
+1. 내가 만든 파일:
+2. 실행한 방법:
+3. 발생한 문제:
+4. 오류 메시지:
+
+오류 메시지 또는 문제 내용은 아래와 같아.
+[여기에 오류 메시지나 문제 상황을 붙여넣기]
+
+다음 기준으로 도와줘.
+1. 오류 원인을 초보자도 이해할 수 있게 설명해줘.
+2. 코드 문제인지, 실행 환경 문제인지, 사이트 구조 문제인지 구분해줘.
+3. 어느 파일 또는 어느 부분을 수정해야 하는지 알려줘.
+4. 수정된 전체 코드를 다시 제공해줘.
+5. 다시 실행하는 방법도 단계별로 알려줘.</pre>
+        </div>
+      </div>
+    </main>
+    <div class="footer"><div></div><div><b>19</b></div></div>
+  </div>
+</section>
+
+<!-- 20 실습 A 성공 기준 -->
+<section class="slide" data-title="실습 A 성공 기준">
+  <div class="panel">
+    <div class="topbar"><div class="brand"><span class="sq"></span><b>VIBE CODING</b></div><div>성공 기준</div></div>
+    <main class="content">
+      <div class="ghost">06</div>
+      <div class="kicker">SUCCESS CRITERIA</div>
+      <h1>완벽한 프로그램보다 중요한 것은<br/><mark>작동 · 수정 · 공유 경험</mark></h1>
+      <div class="checklist">
+        <div><b>1단계</b><span>AI가 index.html 전체 코드를 만들어준다.</span></div>
+        <div><b>2단계</b><span>실습자료.xlsx 명단 시트를 붙여넣고 검사 결과가 표로 나온다.</span></div>
+        <div><b>3단계</b><span>형식오류·공란·중복이 유형별 건수로 요약된다.</span></div>
+        <div><b>4단계</b><span>오류정답 시트(120건)와 비교해 몇 건을 잡았는지 확인한다.</span></div>
+        <div><b>5단계</b><span>놓친 유형은 수정 프롬프트로 다시 요청해 정확도를 높인다.</span></div>
+        <div><b>6단계</b><span>Netlify에 올려 링크로 공유할 수 있다.</span></div>
+      </div>
+    </main>
+    <div class="footer"><div></div><div><b>20</b></div></div>
+  </div>
+</section>
+
+<!-- Netlify 배포 -->
+<section class="slide" data-title="Netlify로 1분 만에 배포합니다">
+  <div class="panel">
+    <div class="topbar"><div class="brand"><span class="sq"></span><b>VIBE CODING</b></div><div>배포 · NETLIFY</div></div>
+    <main class="content">
+      <div class="kicker">DEPLOY · NETLIFY DROP</div>
+      <h1>만든 파일을 <mark>1분 만에 배포</mark>합니다</h1>
+      <div class="flow four">
+        <div><div class="n">1</div><h3>접속</h3><p>주소창에 <b>netlify.com/drop</b>을 엽니다. 로그인 없이도 됩니다.</p></div>
+        <div><div class="n">2</div><h3>끌어놓기</h3><p>만든 index.html 파일(또는 폴더)을 화면에 드래그합니다.</p></div>
+        <div><div class="n">3</div><h3>링크 생성</h3><p>몇 초 뒤 공개 주소(URL)가 자동으로 만들어집니다.</p></div>
+        <div><div class="n">4</div><h3>확인·공유</h3><p>휴대폰으로 열어보고, 그 링크를 복사합니다.</p></div>
+      </div>
+      <div class="side-note">파일 이름은 반드시 <b>index.html</b>이어야 바로 열립니다. 로그인하면 이름 변경과 재배포(수정본 다시 올리기)도 할 수 있습니다.</div>
+    </main>
+    <div class="footer"><div></div><div><b>0</b></div></div>
+  </div>
+</section>
+
+<!-- 서로 공유 활동 -->
+<section class="slide" data-title="만든 도구를 서로 공유해봅니다">
+  <div class="panel">
+    <div class="topbar"><div class="brand"><span class="sq"></span><b>VIBE CODING</b></div><div>활동 · 10분</div></div>
+    <main class="content">
+      <div class="ghost">★</div>
+      <div class="kicker">ACTIVITY · 서로 공유하기</div>
+      <h1>내가 만든 도구를<br/><mark>서로 공유</mark>해봅니다</h1>
+      <div class="grid three lower">
+        <div class="card"><span class="meta">STEP 1</span><h3>링크 올리기</h3><p>배포한 Netlify 링크를 단체 채팅방이나 공유 시트에 올립니다.</p></div>
+        <div class="card"><span class="meta">STEP 2</span><h3>옆 사람 도구 써보기</h3><p>다른 사람이 만든 도구에 예시 데이터를 넣고 직접 실행해봅니다.</p></div>
+        <div class="card dark"><span class="meta">STEP 3</span><h3>피드백 한 줄</h3><p>좋았던 점 하나, 개선 아이디어 하나를 댓글이나 말로 남깁니다.</p></div>
+      </div>
+      <div class="side-note ok">“다른 사람의 도구 중 내 업무에 바로 쓸 만한 것이 있었나요?” 있으면 그 자리에서 <b>수정 프롬프트</b>로 내 상황에 맞게 바꿔봅니다.</div>
+    </main>
+    <div class="footer"><div></div><div><b>0</b></div></div>
+  </div>
+</section>
+
+<!-- 21 SECTION 실습 B -->
+<section class="slide section" data-title="PART 3 · Console + 확장 프로그램">
+  <div class="panel">
+    <div class="topbar"><div class="brand"><span class="sq"></span><b>VIBE CODING</b></div><div>PART 03 · PRACTICE B</div></div>
+    <div style="margin:auto 0">
+      <div class="tlabel">PART 03 · 실습 B · 70분</div>
+      <div class="num">03</div>
+      <h1>브라우저 하나로<br/>게시판 500건을 엑셀로</h1>
+      <p class="desc">설치 없이 개발자 도구 Console로 자동화를 익히고, 엑셀 다운로드 기능이 없는 게시판(한줄소감)의 글을 자동으로 모아 CSV로 저장하는 크롬 확장 프로그램을 만듭니다.</p>
+    </div>
+    <div class="footer"><div></div><div><b>21</b></div></div>
+  </div>
+</section>
+
+<!-- 확장 프로그램이란 -->
+<section class="slide" data-title="확장 프로그램은 브라우저에 기능을 더하는 앱">
+  <div class="panel">
+    <div class="topbar"><div class="brand"><span class="sq"></span><b>VIBE CODING</b></div><div>확장 프로그램 기초</div></div>
+    <main class="content">
+      <div class="ghost">＋</div>
+      <div class="kicker">WHAT IS AN EXTENSION</div>
+      <h1>확장 프로그램은 <mark>브라우저에 기능을 더하는</mark> 앱입니다</h1>
+      <p class="lead">브라우저 우상단 아이콘으로 실행되며, 지금 보고 있는 웹페이지에 내가 원하는 기능을 얹습니다. 사실 우리는 이미 여러 개를 쓰고 있습니다.</p>
+      <div class="grid three lower">
+        <div class="card"><span class="meta">익숙한 예 1</span><h3>광고 차단</h3><p>페이지의 광고를 걸러서 화면을 깔끔하게 만들어 줍니다.</p></div>
+        <div class="card"><span class="meta">익숙한 예 2</span><h3>번역</h3><p>외국어 페이지를 자동으로 우리말로 바꿔 보여줍니다.</p></div>
+        <div class="card dark"><span class="meta">익숙한 예 3</span><h3>화면 캡처·비밀번호</h3><p>반복되는 작업을 아이콘 하나로 대신 처리해 줍니다.</p></div>
+      </div>
+      <div class="side-note ok">이런 것도 결국 누군가 만든 확장입니다. 오늘은 그걸 <b>내가 직접</b> 만들어 브라우저에 등록해 봅니다.</div>
+    </main>
+    <div class="footer"><div></div><div><b>0</b></div></div>
+  </div>
+</section>
+
+<!-- 확장 프로그램 활용 -->
+<section class="slide" data-title="확장 프로그램으로 할 수 있는 것">
+  <div class="panel">
+    <div class="topbar"><div class="brand"><span class="sq"></span><b>VIBE CODING</b></div><div>활용 범위</div></div>
+    <main class="content">
+      <div class="kicker">WHAT IT CAN DO</div>
+      <h1>확장 프로그램으로 <mark>이런 업무</mark>를 자동화합니다</h1>
+      <div class="grid four lower">
+        <div class="card"><span class="meta">반복 입력</span><h3>폼 채우기</h3><p>신청서·설문의 반복 입력을 버튼 하나로 처리합니다.</p></div>
+        <div class="card"><span class="meta">정보 정리</span><h3>수집 · 요약</h3><p>페이지의 링크·표·본문을 모아 정리하거나 요약합니다.</p></div>
+        <div class="card"><span class="meta">화면 개선</span><h3>정보 덧붙이기</h3><p>불편한 업무 화면에 필요한 정보를 얹어 보여줍니다.</p></div>
+        <div class="card dark"><span class="meta">작업 묶기</span><h3>아이콘 하나로</h3><p>여러 기능을 모아 클릭 한 번에 실행합니다.</p></div>
+      </div>
+      <div class="side-note">오늘은 이 중 <b>‘정보 수집’ 확장</b>을 만듭니다. 엑셀 저장 기능이 없는 게시판 글을 자동으로 모아 CSV로 내려받습니다.</div>
+    </main>
+    <div class="footer"><div></div><div><b>0</b></div></div>
+  </div>
+</section>
+
+<!-- 22 개발자 도구 열기 -->
+<section class="slide" data-title="개발자 도구 열기 (F12)">
+  <div class="panel">
+    <div class="topbar"><div class="brand"><span class="sq"></span><b>VIBE CODING</b></div><div>1장 · DevTools 기초</div></div>
+    <main class="content">
+      <div class="kicker">OPEN DEVTOOLS</div>
+      <h1>먼저 <mark>F12</mark>로 개발자 도구를 엽니다</h1>
+      <div class="grid two lower">
+        <div class="card"><span class="meta">Elements</span><h3>페이지의 설계도</h3><p>HTML 태그 트리 구조를 봅니다. 요소를 클릭하면 화면에서 하이라이트되고, 텍스트·색상을 실시간 수정할 수 있습니다. (새로고침하면 원복)</p></div>
+        <div class="card dark"><span class="meta">Console</span><h3>코드를 실행하는 엔진</h3><p>JS 코드를 즉시 실행하고, 에러·경고를 확인하며, console.log()로 값을 출력합니다. 현재 페이지의 모든 요소에 접근합니다.</p></div>
+      </div>
+      <div class="side-note">여는 방법: <b>F12</b> 또는 우클릭 → 검사 (Mac은 <b>Cmd+Option+I</b>). 오늘은 Console과 Elements 두 탭만 사용합니다.</div>
+    </main>
+    <div class="footer"><div></div><div><b>22</b></div></div>
+  </div>
+</section>
+
+<!-- 23 Console 따라치기 3단계 -->
+<section class="slide" data-title="Console 따라치기 3단계">
+  <div class="panel">
+    <div class="topbar"><div class="brand"><span class="sq"></span><b>VIBE CODING</b></div><div>1장 · 기초 실습</div></div>
+    <main class="content">
+      <div class="kicker">CONSOLE BASICS</div>
+      <h1>먼저 <mark>세 줄</mark>을 따라 쳐봅니다</h1>
+      <div class="grid three lower">
+        <div class="codecard"><div class="h">STEP 01 · 첫 출력</div><pre>console.log("안녕하세요!")</pre></div>
+        <div class="codecard"><div class="h">STEP 02 · 페이지 정보</div><pre>console.log(document.title)
+console.log(location.href)</pre></div>
+        <div class="codecard"><div class="h">STEP 03 · 팝업 연동</div><pre>const name = prompt("이름?");
+alert("환영합니다, " + name + "님!");</pre></div>
+      </div>
+      <div class="side-note danger">alert을 반복문 안에 많이 넣으면 브라우저가 멈춘 것처럼 보일 수 있습니다. 실습은 <b>about:blank</b> 페이지에서 권장합니다.</div>
+    </main>
+    <div class="footer"><div></div><div><b>23</b></div></div>
+  </div>
+</section>
+
+<!-- 24 Console 4대 유형 소개 -->
+<section class="slide dark-slide" data-title="설치 없이 이런 것까지 됩니다">
+  <div class="panel">
+    <div class="topbar"><div class="brand"><span class="sq"></span><b>VIBE CODING</b></div><div>2장 · Console 활용</div></div>
+    <main class="content" style="display:flex;flex-direction:column;justify-content:center">
+      <div class="kicker">ONE SENTENCE</div>
+      <h1 style="font-size:52px">설치도 없이, 브라우저 하나로<br/><mark>이런 것까지 됩니다</mark></h1>
+      <div class="grid four lower" style="margin-top:30px">
+        <div class="card" style="background:#1f1f1f;border-color:#2c2c2c"><span class="meta">유형 01</span><h3 style="color:#f6f6f4;font-size:19px">폼 자동 채우기</h3></div>
+        <div class="card" style="background:#1f1f1f;border-color:#2c2c2c"><span class="meta">유형 02</span><h3 style="color:#f6f6f4;font-size:19px">다운로드 자동화</h3></div>
+        <div class="card" style="background:#1f1f1f;border-color:#2c2c2c"><span class="meta">유형 03</span><h3 style="color:#f6f6f4;font-size:19px">데이터 시각화</h3></div>
+        <div class="card" style="background:#1f1f1f;border-color:#2c2c2c"><span class="meta">유형 04</span><h3 style="color:#f6f6f4;font-size:19px">LLM 연결 분석</h3></div>
+      </div>
+    </main>
+    <div class="footer"><div></div><div><b>24</b></div></div>
+  </div>
+</section>
+
+<!-- 25 유형 01 폼 자동채우기 -->
+<section class="slide" data-title="유형 01 폼 자동 채우기">
+  <div class="panel">
+    <div class="topbar"><div class="brand"><span class="sq"></span><b>VIBE CODING</b></div><div>유형 01 · FORM AUTO-FILL</div></div>
+    <main class="content">
+      <div class="kicker">TYPE 01 · 폼 자동 채우기</div>
+      <h1>반복 입력을 <mark>10분에서 10초</mark>로 줄입니다</h1>
+      <div class="grid two lower" style="grid-template-columns:1.25fr .75fr">
+        <div class="codecard"><div class="h">FORM AUTO-FILL</div><pre>// 입력 필드를 찾아 값 넣기
+document.querySelector('#username').value = '홍길동';
+document.querySelector('#email').value = 'hong@example.com';
+
+// 버튼 자동 클릭
+document.querySelector('#submit').click();</pre></div>
+        <div>
+          <div class="card"><span class="meta">원리</span><h3 style="font-size:19px">선택 → 주입 → 클릭</h3><p>querySelector()로 요소를 선택하고, .value로 값을 넣고, .click()으로 버튼을 누릅니다.</p></div>
+        </div>
+      </div>
+      <div class="side-note danger">동적으로 로딩되는 폼은 setTimeout() 또는 MutationObserver 조합이 필요합니다. 실습은 about:blank에 폼을 직접 만들어 진행합니다.</div>
+    </main>
+    <div class="footer"><div></div><div><b>25</b></div></div>
+  </div>
+</section>
+
+<!-- 26 유형 02 다운로드 -->
+<section class="slide" data-title="유형 02 한 번에 다운로드">
+  <div class="panel">
+    <div class="topbar"><div class="brand"><span class="sq"></span><b>VIBE CODING</b></div><div>유형 02 · BULK DOWNLOAD</div></div>
+    <main class="content">
+      <div class="kicker">TYPE 02 · 한 번에 다운로드 &nbsp;★ 오늘 실습의 핵심</div>
+      <h1>페이지의 정보를 <mark>모아서 저장</mark>합니다</h1>
+      <div class="grid two lower">
+        <div class="codecard"><div class="h">URL 추출</div><pre>// 모든 이미지 URL 출력
+document.querySelectorAll('img')
+  .forEach(img => console.log(img.src));
+
+// PDF 링크만 추출
+document.querySelectorAll('a[href$=".pdf"]')
+  .forEach(a => console.log(a.href));</pre></div>
+        <div class="codecard"><div class="h">ADVANCED · 자동 다운로드 트리거</div><pre>document.querySelectorAll('a[href$=".pdf"]')
+  .forEach(a => {
+    const link = document.createElement("a");
+    link.href = a.href;
+    link.download = "";
+    link.click();
+  });</pre></div>
+      </div>
+      <div class="side-note ok">오늘 실습은 이 <b>‘목록 → 모아서 저장’</b> 패턴입니다. 공개 게시판 목록을 페이지마다 읽어 CSV로 모읍니다. (저작권·이용약관을 지키고 공개 데이터에 한정합니다.)</div>
+    </main>
+    <div class="footer"><div></div><div><b>26</b></div></div>
+  </div>
+</section>
+
+<!-- 27 유형 03 데이터 시각화 (확장 결과물 핵심) -->
+<section class="slide" data-title="유형 03 팝업창에 데이터 시각화">
+  <div class="panel">
+    <div class="topbar"><div class="brand"><span class="sq"></span><b>VIBE CODING</b></div><div>유형 03 · DATA VISUALIZATION</div></div>
+    <main class="content">
+      <div class="kicker">TYPE 03 · 페이지 분석 팝업</div>
+      <h1>페이지를 <mark>즉석 분석 표</mark>로 띄웁니다</h1>
+      <div class="grid two lower" style="grid-template-columns:1.3fr .7fr">
+        <div class="codecard"><div class="h">PAGE ANALYSIS POPUP</div><pre>const popup = window.open('','','width=600,height=400');
+popup.document.write(`
+  &lt;h2&gt;페이지 분석&lt;/h2&gt;
+  &lt;table border="1"&gt;
+    &lt;tr&gt;&lt;td&gt;링크 수&lt;/td&gt;
+      &lt;td&gt;${document.querySelectorAll('a').length}&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;td&gt;이미지 수&lt;/td&gt;
+      &lt;td&gt;${document.querySelectorAll('img').length}&lt;/td&gt;&lt;/tr&gt;
+  &lt;/table&gt;
+`);</pre></div>
+        <div>
+          <div class="card"><span class="meta">만들 수 있는 것</span><h3 style="font-size:19px">임시 대시보드</h3><p>링크·이미지 수 요약 표, 키워드 빈도, 수치 비교 그래프를 설치 없이 즉석에서 만듭니다.</p></div>
+        </div>
+      </div>
+      <div class="side-note">수집한 데이터를 이렇게 <b>즉석 표로 확인</b>할 수도 있습니다. 화면 결과는 새로고침하면 사라지므로, 실제로는 CSV 파일로 저장합니다.</div>
+    </main>
+    <div class="footer"><div></div><div><b>27</b></div></div>
+  </div>
+</section>
+
+<!-- 28 유형 04 LLM 요약 -->
+<section class="slide tight" data-title="유형 04 LLM 연결 요약">
+  <div class="panel">
+    <div class="topbar"><div class="brand"><span class="sq"></span><b>VIBE CODING</b></div><div>유형 04 · LLM INTEGRATION</div></div>
+    <main class="content">
+      <div class="kicker">TYPE 04 · LLM 연결하여 요약</div>
+      <h1>페이지 내용을 <mark>AI로 3줄 요약</mark>합니다</h1>
+      <div class="grid two lower">
+        <div class="codecard"><div class="h">방식 A · 외부 API (OpenAI / Claude)</div><pre>const text = document.body.innerText.slice(0,1000);
+const res = await fetch(
+  "https://api.openai.com/v1/chat/completions",
+  { method:"POST",
+    headers:{ "Authorization":"Bearer KEY" },
+    body: JSON.stringify({
+      model:"gpt-4o",
+      messages:[{role:"user",
+        content:"3줄 요약:\n"+text}]
+    })
+  });
+const d = await res.json();
+alert(d.choices[0].message.content);</pre></div>
+        <div class="codecard"><div class="h">방식 B · Local LLM (Ollama)</div><pre>// ollama run llama3 으로 로컬 서버 실행
+const text = document.body.innerText.slice(0,1000);
+const res = await fetch(
+  "http://localhost:11434/api/generate",
+  { method:"POST",
+    body: JSON.stringify({
+      model:"llama3",
+      prompt:"3줄 요약:\n"+text,
+      stream:false
+    })
+  });
+const d = await res.json();
+alert(d.response);</pre></div>
+      </div>
+      <div class="side-note danger">API Key를 Console에 직접 입력하면 화면에 노출됩니다. 실습용 Key를 쓰고 사용 후 즉시 폐기하세요. 외부 API는 데이터가 외부로 전송되고, Local LLM은 완전 로컬 처리입니다.</div>
+    </main>
+    <div class="footer"><div></div><div><b>28</b></div></div>
+  </div>
+</section>
+
+<!-- 실습 B 문제 상황 -->
+<section class="slide" data-title="게시판 500건, 엑셀 버튼이 없습니다">
+  <div class="panel">
+    <div class="topbar"><div class="brand"><span class="sq"></span><b>VIBE CODING</b></div><div>실습 B · 문제 상황</div></div>
+    <main class="content">
+      <div class="ghost">B</div>
+      <div class="kicker">PROBLEM</div>
+      <h1>게시판 글 <mark>491건</mark>을<br/>손으로 복사할 수는 없습니다</h1>
+      <div class="grid three lower">
+        <div class="card"><span class="meta">데이터</span><h3>한줄소감 게시판</h3><p>해외연수 후기 게시판의 2026년 글. 목록 표에 후기·학교·이름이 다 있습니다.</p></div>
+        <div class="card"><span class="meta">규모</span><h3>491건 · 50페이지</h3><p>한 페이지에 10건씩, 50페이지에 걸쳐 있습니다.</p></div>
+        <div class="card dark"><span class="meta">불편함</span><h3>엑셀 저장이 없다</h3><p>다운로드 버튼이 없어, 지금은 한 건씩 복사·붙여넣기 해야 합니다.</p></div>
+      </div>
+      <div class="side-note">500건을 손으로 복사하면 몇 시간. <b>페이지를 자동으로 넘기며 모아 CSV로 저장</b>하는 확장을 만들면 몇 초로 끝납니다.</div>
+    </main>
+    <div class="footer"><div></div><div><b>0</b></div></div>
+  </div>
+</section>
+
+<!-- 실습 B ① 메타 프롬프트 -->
+<section class="slide prompt-slide" data-title="① 메타 프롬프트로 요청문부터 만듭니다">
+  <div class="panel">
+    <div class="topbar"><div class="brand"><span class="sq"></span><b>VIBE CODING</b></div><div>복사용 프롬프트 05</div></div>
+    <main class="content">
+      <div class="kicker">COPY PROMPT 05 · 메타 프롬프트 (콘솔 테스트용)</div>
+      <h1>① 먼저 <mark>메타 프롬프트</mark>로 요청문을 만듭니다</h1>
+      <div class="prompt-layout">
+        <div class="prompt-info">
+          <h3>사용 시점</h3>
+          <p>코드를 바로 달라고 하지 않고, “이 문제를 풀 좋은 요청문을 만들어줘”라고 먼저 시킵니다.</p>
+          <p>단, <b>콘솔에서 바로 테스트할 수 있는 코드</b>가 나오도록 조건을 담게 합니다.</p>
+          <div class="badges"><span class="badge y">메타 프롬프트</span><span class="badge">콘솔 테스트용</span><span class="badge dark">요청문 완성</span></div>
+        </div>
+        <div class="prompt-box">
+          <header><b>META PROMPT</b><button class="copy-btn" onclick="copyPrompt(this)">복사</button></header>
+          <pre class="prompt-text">너는 개발 요청문(프롬프트) 작성 도우미야. 나는 코딩 초보자야.
+아래 문제를 풀 코드를 받고 싶은데, 먼저 크롬 개발자 도구 콘솔(F12)에
+붙여넣어 바로 테스트할 수 있는 자바스크립트가 나오도록,
+내가 새 AI 채팅창에 그대로 붙여넣을 '좋은 요청문'을 만들어줘.
+
+[문제 상황]
+- 전북교육청 '한줄소감' 게시판 2026년 글 491건을 엑셀로 모으고 싶어.
+- 목록 표에 번호 / 구분 / 국가 / 한 줄 후기 / 학교명 / 이름 이 다 있어.
+- 페이지당 10건, 주소의 startPage=1~50 으로 넘어가. 엑셀 다운로드 기능은 없어.
+- 목록 주소: (한줄소감 목록 페이지 주소를 붙여넣기)
+
+[요청문에 꼭 담을 조건]
+- 콘솔에 붙여넣으면 바로 실행되는 자바스크립트일 것
+- startPage를 1부터 끝까지 fetch로 돌며 표에서 6개 열을 뽑을 것
+- 페이지마다 0.3~0.5초 간격을 둘 것
+- 결과를 CSV로 만들어 다운로드 (UTF-8 BOM, 쉼표·줄바꿈은 큰따옴표로 감싸기)
+- 공개 목록만 사용하고 로그인·개인정보는 수집하지 않을 것
+
+마지막에, 내가 새 채팅창에 그대로 붙여넣을 '최종 요청문' 하나를 완성해서 줘.</pre>
+        </div>
+      </div>
+    </main>
+    <div class="footer"><div></div><div><b>0</b></div></div>
+  </div>
+</section>
+
+<!-- 실습 B ② 콘솔 테스트 -->
+<section class="slide" data-title="② 콘솔에 붙여넣어 먼저 테스트합니다">
+  <div class="panel">
+    <div class="topbar"><div class="brand"><span class="sq"></span><b>VIBE CODING</b></div><div>콘솔 테스트</div></div>
+    <main class="content">
+      <div class="kicker">STEP ② · CONSOLE TEST</div>
+      <h1>② 받은 코드를 <mark>콘솔에서 먼저</mark> 돌려봅니다</h1>
+      <div class="flow five">
+        <div><div class="n">1</div><h3>요청문 받기</h3><p>메타 프롬프트가 만들어 준 ‘최종 요청문’을 복사합니다.</p></div>
+        <div><div class="n">2</div><h3>새 창에 물어보기</h3><p>새 AI 채팅창에 붙여넣어 자바스크립트 코드를 받습니다.</p></div>
+        <div><div class="n">3</div><h3>게시판 열기</h3><p>한줄소감(2026) 목록 페이지를 브라우저에서 엽니다.</p></div>
+        <div><div class="n">4</div><h3>F12 → Console</h3><p>개발자 도구를 열고 Console 탭으로 이동합니다.</p></div>
+        <div><div class="n">5</div><h3>붙여넣고 Enter</h3><p>코드를 붙여넣어 실행 → CSV가 내려받아지는지 확인합니다.</p></div>
+      </div>
+      <div class="side-note ok">확장으로 만들기 전에 콘솔에서 먼저 돌려보면, <b>로직이 맞는지 빠르게 확인하고 고칠 수</b> 있습니다.</div>
+    </main>
+    <div class="footer"><div></div><div><b>0</b></div></div>
+  </div>
+</section>
+
+<!-- 실습 B ③ 확장으로 만들기 -->
+<section class="slide prompt-slide" data-title="③ 확장 프로그램으로 만들어달라고 합니다">
+  <div class="panel">
+    <div class="topbar"><div class="brand"><span class="sq"></span><b>VIBE CODING</b></div><div>복사용 프롬프트 06</div></div>
+    <main class="content">
+      <div class="kicker">COPY PROMPT 06 · 확장 프로그램화</div>
+      <h1>③ 잘 되면 <mark>확장 프로그램</mark>으로 만들어달라고 합니다</h1>
+      <div class="prompt-layout">
+        <div class="prompt-info">
+          <h3>사용 시점</h3>
+          <p>콘솔에서 수집이 잘 된 것을 확인한 뒤 사용합니다.</p>
+          <p>방금 콘솔에서 쓴 코드를 그대로 확장 프로그램으로 감싸달라고 요청합니다.</p>
+          <div class="badges"><span class="badge y">Manifest V3</span><span class="badge">3개 파일</span><span class="badge dark">버튼 실행</span></div>
+        </div>
+        <div class="prompt-box">
+          <header><b>EXTENSION PROMPT</b><button class="copy-btn" onclick="copyPrompt(this)">복사</button></header>
+          <pre class="prompt-text">방금 콘솔에서 잘 작동한 이 코드를, 크롬 확장 프로그램으로 만들어줘.
+
+(아래에 방금 콘솔에서 실행한 코드를 붙여넣기)
+
+조건은 다음과 같아.
+1. Manifest V3 확장으로 만들어줘. 파일은 manifest.json, popup.html, popup.js.
+2. manifest에 host_permissions로 https://www.jbe.go.kr/* 접근 권한을 넣어줘.
+3. 팝업에 [수집 시작] 버튼과 진행 상태(예: 12/50페이지)를 넣어줘.
+4. 버튼을 누르면 위 코드가 실행되어 CSV가 다운로드되게 해줘.
+5. 파일명은 한줄소감_2026.csv, 엑셀에서 한글이 안 깨지게 UTF-8 BOM으로 저장해줘.
+6. 공개 목록만 사용하고 로그인·개인정보는 수집하지 않아.
+
+각 파일(manifest.json, popup.html, popup.js) 전체 코드를 파일명과 함께 하나씩 제공해줘.</pre>
+        </div>
+      </div>
+    </main>
+    <div class="footer"><div></div><div><b>0</b></div></div>
+  </div>
+</section>
+
+<!-- 실습 B 파일 3개 구조 -->
+<section class="slide" data-title="AI가 만들어준 파일 3개">
+  <div class="panel">
+    <div class="topbar"><div class="brand"><span class="sq"></span><b>VIBE CODING</b></div><div>파일 구조</div></div>
+    <main class="content">
+      <div class="kicker">3 FILES</div>
+      <h1>AI가 만들어준 <mark>파일 세 개</mark>는 이런 역할입니다</h1>
+      <div class="grid three lower">
+        <div class="codecard"><div class="h">manifest.json · 설명서</div><pre>{
+  "manifest_version": 3,
+  "name": "한줄소감 수집기",
+  "version": "1.0",
+  "permissions": ["downloads"],
+  "host_permissions":
+    ["https://www.jbe.go.kr/*"],
+  "action": {
+    "default_popup":"popup.html"
+  }
+}</pre></div>
+        <div class="codecard"><div class="h">popup.js · 실행할 코드</div><pre>// 콘솔에서 검증한 수집 코드를
+// 버튼 클릭 시 실행하도록 담습니다
+const td =
+ tr.querySelectorAll('td');
+data.push([
+ td[0].innerText, // 번호
+ td[3].innerText  // 한 줄 후기
+]);
+// …반복 후 CSV로 저장</pre></div>
+        <div class="codecard"><div class="h">popup.html · 버튼 UI</div><pre>&lt;button id="run"&gt;
+  수집 시작
+&lt;/button&gt;
+&lt;div id="status"&gt;
+  대기 중
+&lt;/div&gt;</pre></div>
+      </div>
+      <div class="side-note">아이콘을 클릭하면 popup.html의 버튼이 뜨고, 버튼을 누르면 <b>popup.js가 페이지를 순회하며 데이터를 모읍니다.</b></div>
+    </main>
+    <div class="footer"><div></div><div><b>0</b></div></div>
+  </div>
+</section>
+
+<!-- 32 등록 4단계 -->
+<section class="slide" data-title="확장 프로그램 등록 4단계">
+  <div class="panel">
+    <div class="topbar"><div class="brand"><span class="sq"></span><b>VIBE CODING</b></div><div>등록 방법</div></div>
+    <main class="content">
+      <div class="ghost">07</div>
+      <div class="kicker">INSTALL · 확장 프로그램 설치</div>
+      <h1>설치는 <mark>네 단계</mark>면 끝납니다</h1>
+      <div class="flow four" style="grid-template-columns:repeat(4,1fr)">
+        <div><div class="n">1</div><h3>폴더에 저장</h3><p>AI가 준 파일 3개를 하나의 폴더에 저장합니다.</p></div>
+        <div><div class="n">2</div><h3>확장 페이지</h3><p>주소창에 <b>chrome://extensions/</b> 를 입력해 접속합니다.</p></div>
+        <div><div class="n">3</div><h3>개발자 모드 ON</h3><p>오른쪽 위 <b>‘개발자 모드’</b> 토글을 켭니다.</p></div>
+        <div><div class="n">4</div><h3>확장 로드</h3><p><b>‘압축해제된 확장 프로그램을 로드’</b> 클릭 → 저장한 폴더 선택.</p></div>
+      </div>
+      <div class="side-note ok">우상단에 아이콘이 생기고, 클릭 → [수집 시작]이면 끝입니다. <b>이걸로 실습 B 완료!</b></div>
+    </main>
+    <div class="footer"><div></div><div><b>32</b></div></div>
+  </div>
+</section>
+
+<!-- 33 실습 B 성공 기준 -->
+<section class="slide" data-title="실습 B 성공 기준">
+  <div class="panel">
+    <div class="topbar"><div class="brand"><span class="sq"></span><b>VIBE CODING</b></div><div>성공 기준</div></div>
+    <main class="content">
+      <div class="kicker">SUCCESS CRITERIA</div>
+      <h1><mark>콘솔에서 확인 → 확장으로 완성</mark>하면 성공</h1>
+      <div class="grid three lower">
+        <div class="card"><span class="meta">1단계</span><h3>콘솔 수집</h3><p>콘솔에 붙여넣은 코드로 CSV가 실제로 내려받아집니다.</p></div>
+        <div class="card"><span class="meta">2단계</span><h3>확장 설치</h3><p>3개 파일을 로드해 우상단에 아이콘이 생기고 버튼이 뜹니다.</p></div>
+        <div class="card dark"><span class="meta">3단계</span><h3>엑셀 확인</h3><p>[수집 시작] → 한줄소감_2026.csv에 491건·6개 열이 다 있으면 성공.</p></div>
+      </div>
+      <div class="side-note">안 되는 상황도 실습의 일부입니다. 권한(host_permissions)이나 표 구조 때문에 막히면 오류 메시지를 그대로 AI에게 붙여넣어 함께 고칩니다.</div>
+    </main>
+    <div class="footer"><div></div><div><b>33</b></div></div>
+  </div>
+</section>
+
+<!-- PLUS 알파 · Lovable 섹션 -->
+<section class="slide section" data-title="＋α · Lovable로 웹사이트 만들기">
+  <div class="panel">
+    <div class="topbar"><div class="brand"><span class="sq"></span><b>VIBE CODING</b></div><div>PLUS · OPTIONAL</div></div>
+    <div style="margin:auto 0">
+      <div class="tlabel">＋α · 시간이 남으면</div>
+      <div class="num" style="font-size:120px">＋α</div>
+      <h1>Lovable로<br/>원하는 웹사이트를 만듭니다</h1>
+      <p class="desc">코딩 없이 말로 웹사이트를 만들고, 완성되면 퍼블리시해서 서로 공유해봅니다.</p>
+    </div>
+    <div class="footer"><div></div><div><b>0</b></div></div>
+  </div>
+</section>
+
+<!-- Lovable 소개 -->
+<section class="slide" data-title="Lovable은 말로 웹사이트를 만드는 도구">
+  <div class="panel">
+    <div class="topbar"><div class="brand"><span class="sq"></span><b>VIBE CODING</b></div><div>Lovable 기초</div></div>
+    <main class="content">
+      <div class="ghost">♥</div>
+      <div class="kicker">WHAT IS LOVABLE</div>
+      <h1>Lovable은 <mark>말로 웹사이트를 만드는</mark> 도구입니다</h1>
+      <p class="lead">만들고 싶은 것을 채팅으로 설명하면 AI가 실제 웹사이트를 만들어 줍니다. 코딩이 필요 없고, 완성되면 클릭 한 번으로 인터넷에 공개할 수 있습니다.</p>
+      <div class="grid three lower">
+        <div class="card"><span class="meta">대화로 제작</span><h3>설명하면 만들어짐</h3><p>원하는 화면을 채팅으로 설명하면 바로 미리보기가 나옵니다.</p></div>
+        <div class="card"><span class="meta">코딩 불필요</span><h3>파일·서버 안 만짐</h3><p>코드 파일이나 서버 설정을 직접 다루지 않아도 됩니다.</p></div>
+        <div class="card dark"><span class="meta">바로 퍼블리시</span><h3>주소로 공개</h3><p>완성하면 lovable.app 주소로 공개하고 링크를 공유합니다.</p></div>
+      </div>
+      <div class="side-note ok">첫 메시지부터 공개 주소까지 보통 <b>10분 안팎</b>. 모든 요금제에서 무료로 퍼블리시됩니다.</div>
+    </main>
+    <div class="footer"><div></div><div><b>0</b></div></div>
+  </div>
+</section>
+
+<!-- Lovable 활용 -->
+<section class="slide" data-title="Lovable로 만들 수 있는 것">
+  <div class="panel">
+    <div class="topbar"><div class="brand"><span class="sq"></span><b>VIBE CODING</b></div><div>활용 범위</div></div>
+    <main class="content">
+      <div class="kicker">WHAT YOU CAN BUILD</div>
+      <h1>Lovable로 <mark>이런 것들</mark>을 만듭니다</h1>
+      <div class="grid four lower">
+        <div class="card"><span class="meta">소개 페이지</span><h3>행사 · 부서 소개</h3><p>행사·부서·동아리를 소개하는 한 페이지 사이트.</p></div>
+        <div class="card"><span class="meta">안내 페이지</span><h3>일정 · 오시는 길</h3><p>일정, 오시는 길, 자주 묻는 질문(FAQ) 안내.</p></div>
+        <div class="card"><span class="meta">신청폼</span><h3>참가 · 설문</h3><p>참가 신청이나 간단한 설문을 받는 페이지.</p></div>
+        <div class="card dark"><span class="meta">링크 모음</span><h3>바로가기 모음</h3><p>업무도구·자료 링크를 모아두는 페이지.</p></div>
+      </div>
+      <div class="side-note">오늘 실습 A·B에서 만든 도구를 <b>소개하는 페이지</b>로 써도 좋습니다.</div>
+    </main>
+    <div class="footer"><div></div><div><b>0</b></div></div>
+  </div>
+</section>
+
+<!-- Lovable 실습 프롬프트 -->
+<section class="slide prompt-slide" data-title="만들고 싶은 걸 이렇게 설명합니다">
+  <div class="panel">
+    <div class="topbar"><div class="brand"><span class="sq"></span><b>VIBE CODING</b></div><div>실습 · Lovable</div></div>
+    <main class="content">
+      <div class="kicker">PRACTICE · 원하는 사이트 만들기</div>
+      <h1>만들고 싶은 걸 <mark>이렇게 설명</mark>합니다</h1>
+      <div class="prompt-layout">
+        <div class="prompt-info">
+          <h3>사용 시점</h3>
+          <p>Lovable에 가입(로그인)한 뒤 새 프로젝트의 첫 메시지로 붙여넣습니다.</p>
+          <p>[ ] 안을 내 상황으로 바꾸고, 미리보기를 보며 계속 수정 요청합니다.</p>
+          <div class="badges"><span class="badge y">첫 메시지</span><span class="badge">수정 반복</span><span class="badge dark">모바일 대응</span></div>
+        </div>
+        <div class="prompt-box">
+          <header><b>LOVABLE PROMPT</b><button class="copy-btn" onclick="copyPrompt(this)">복사</button></header>
+          <pre class="prompt-text">나는 [행사/부서/동아리]를 소개하는 웹사이트를 만들고 싶어.
+
+- 제목: [예: 2026 해외연수 성과 공유회]
+- 넣을 섹션: 소개, 일정, 사진, 신청·문의
+- 분위기: 밝고 깔끔하게, 공공기관 안내 페이지 느낌
+- 색감: [예: 파란색 계열] 을 기본으로 해줘.
+- 모바일에서도 잘 보이게 만들어줘.
+
+먼저 첫 화면부터 만들어 주고,
+내가 수정 요청하면 하나씩 반영해줘.</pre>
+        </div>
+      </div>
+    </main>
+    <div class="footer"><div></div><div><b>0</b></div></div>
+  </div>
+</section>
+
+<!-- Lovable 퍼블리시 & 공유 -->
+<section class="slide" data-title="퍼블리시하고 서로 공유합니다">
+  <div class="panel">
+    <div class="topbar"><div class="brand"><span class="sq"></span><b>VIBE CODING</b></div><div>퍼블리시 & 공유</div></div>
+    <main class="content">
+      <div class="kicker">PUBLISH & SHARE</div>
+      <h1><mark>퍼블리시</mark>하고 링크로 서로 공유합니다</h1>
+      <div class="flow five">
+        <div><div class="n">1</div><h3>Publish</h3><p>편집기 우상단의 Publish 버튼을 누릅니다.</p></div>
+        <div><div class="n">2</div><h3>이름 확인</h3><p>사이트 이름과 아이콘을 확인합니다.</p></div>
+        <div><div class="n">3</div><h3>배포</h3><p>확인하면 잠깐 뒤 인터넷에 공개됩니다.</p></div>
+        <div><div class="n">4</div><h3>주소 생성</h3><p>lovable.app 주소가 자동으로 만들어집니다.</p></div>
+        <div><div class="n">5</div><h3>공유</h3><p>링크를 단체 채팅에 올려 서로 구경합니다.</p></div>
+      </div>
+      <div class="side-note ok">서로의 사이트를 열어보고 <b>좋았던 점 한 줄씩</b> 남기면 마무리가 더 좋습니다.</div>
+    </main>
+    <div class="footer"><div></div><div><b>0</b></div></div>
+  </div>
+</section>
+
+<!-- 34 SECTION 마무리 -->
+<section class="slide section" data-title="PART 4 · 마무리">
+  <div class="panel">
+    <div class="topbar"><div class="brand"><span class="sq"></span><b>VIBE CODING</b></div><div>PART 04 · WRAP-UP</div></div>
+    <div style="margin:auto 0">
+      <div class="tlabel">PART 04 · 마무리 · 10분</div>
+      <div class="num">04</div>
+      <h1>오늘 만든 도구는 예제이고<br/>진짜 결과물은 방식입니다</h1>
+      <p class="desc">중요한 건 오늘 만든 특정 도구가 아니라, 불편을 발견하고 → AI에게 설명하고 → 실행하며 고치는 방식 그 자체입니다.</p>
+    </div>
+    <div class="footer"><div></div><div><b>34</b></div></div>
+  </div>
+</section>
+
+<!-- 35 내 업무 적용 -->
+<section class="slide" data-title="내 업무에 적용하기">
+  <div class="panel">
+    <div class="topbar"><div class="brand"><span class="sq"></span><b>VIBE CODING</b></div><div>업무 적용</div></div>
+    <main class="content">
+      <div class="ghost">08</div>
+      <div class="kicker">APPLY TO WORK</div>
+      <h1>오늘 예제를 <mark>내 업무</mark>로 바꿔봅니다</h1>
+      <div class="tablewrap dense">
+        <table>
+          <thead><tr><th>오늘 실습</th><th>내 업무 적용 예시</th></tr></thead>
+          <tbody>
+            <tr><td>명단 검사 HTML 도구</td><td>연수 신청자 명단 오류·중복 확인, 접수자 연락처 정리</td></tr>
+            <tr><td>Console 폼 자동채우기</td><td>반복 신청서·설문 입력, 테스트 데이터 자동 입력</td></tr>
+            <tr><td>페이지 분석·요약 확장</td><td>공지·보도자료 페이지 빠른 요약, 자료 페이지 링크·이미지 점검</td></tr>
+            <tr><td>메타 프롬프트</td><td>새 도구 만들기 전 요구사항 정리, 빠진 조건 점검</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="side-note">혼자 다시 만들 때 순서: <b>불편 찾기 → 메타 프롬프트 → 작게 만들기 → 실행 후 수정 → 공유</b>.</div>
+    </main>
+    <div class="footer"><div></div><div><b>35</b></div></div>
+  </div>
+</section>
+
+<!-- 36 기억할 3가지 -->
+<section class="slide" data-title="기억해야 할 세 가지">
+  <div class="panel">
+    <div class="topbar"><div class="brand"><span class="sq"></span><b>VIBE CODING</b></div><div>요약</div></div>
+    <main class="content">
+      <div class="kicker">REMEMBER THREE</div>
+      <h1>기억해야 할 것은 <mark>세 가지</mark>입니다</h1>
+      <div class="grid three lower">
+        <div class="card"><span class="meta">01</span><h3>작게 시작한다</h3><p>거창한 시스템이 아니라 작은 불편 하나를 구체적으로 잡습니다. 한 파일, 한 기능으로 충분합니다.</p></div>
+        <div class="card"><span class="meta">02</span><h3>맥락과 함께 말한다</h3><p>AI에게는 업무 인수인계하듯 상황을 함께 줍니다. 같은 업무라도 요청 방식이 결과를 바꿉니다.</p></div>
+        <div class="card dark"><span class="meta">03</span><h3>실행하고 고친다</h3><p>에러는 포기 신호가 아니라 대화 재료입니다. 관찰하고, 말하고, 실행하고, 다시 고칩니다.</p></div>
+      </div>
+    </main>
+    <div class="footer"><div></div><div><b>36</b></div></div>
+  </div>
+</section>
+
+<!-- 37 마무리 감사 -->
+<section class="slide dark-slide" data-title="함께해 주셔서 감사합니다">
+  <div class="panel">
+    <div class="topbar"><div class="brand"><span class="sq"></span><b>VIBE CODING</b></div><div>CLOSING</div></div>
+    <main class="content" style="display:flex;flex-direction:column;justify-content:center">
+      <div class="kicker">THANK YOU</div>
+      <h1 style="font-size:50px">현장 담당자가<br/><mark>가장 훌륭한 도구 기획자</mark>입니다</h1>
+      <div class="quote" style="margin-top:22px">
+        <p>내 업무의 작은 불편함을 발견하고,<br/>AI가 이해할 수 있는 요구사항으로 바꾸고,<br/>실행해보며 고치는 경험.</p>
+        <span>이 과정이 바이브코딩의 핵심입니다. 작게 만들고, 써보고, 고치고, 공유하세요.</span>
+      </div>
+    </main>
+    <div class="footer"><div></div><div><b>37</b></div></div>
+  </div>
+</section>
+
+<!-- Q&A -->
+<section class="slide section" data-title="Q&A">
+  <div class="panel">
+    <div class="topbar"><div class="brand"><span class="sq"></span><b>VIBE CODING</b></div><div>Q &amp; A</div></div>
+    <div style="margin:auto 0;text-align:center;display:flex;flex-direction:column;align-items:center">
+      <div class="tlabel" style="align-self:center">QUESTIONS &amp; ANSWERS</div>
+      <div class="num" style="font-size:150px">Q&amp;A</div>
+      <h1 style="max-width:none">궁금한 점을<br/>무엇이든 물어보세요</h1>
+      <p class="desc" style="margin:0 auto">오늘 만든 도구, 프롬프트 작성법, 내 업무에 적용하는 방법 등 무엇이든 좋습니다.</p>
+    </div>
+    <div class="footer"><div></div><div><b>0</b></div></div>
+  </div>
+</section>
+<!--SLIDES_END-->
+</div>
+
+<div class="controls">
+  <button onclick="prevSlide()">‹</button>
+  <div class="count"><span id="current">1</span>/<span id="total">1</span></div>
+  <button onclick="nextSlide()">›</button>
+</div>
+<div class="help">← → 이동 · O 목록 · H UI 숨김 · P 인쇄</div>
+<div class="overview" id="overview"><h2>슬라이드 목록</h2><div class="overview-grid" id="overviewGrid"></div></div>
+
+<script>
+const slides=[...document.querySelectorAll('.slide')];
+let idx=0;
+const total=document.getElementById('total');
+const current=document.getElementById('current');
+total.textContent=slides.length;
+function show(i){
+  idx=Math.max(0,Math.min(i,slides.length-1));
+  slides.forEach((s,n)=>s.classList.toggle('active',n===idx));
+  current.textContent=idx+1;
+  location.hash='slide-'+(idx+1);
+}
+function nextSlide(){if(idx<slides.length-1)show(idx+1)}
+function prevSlide(){if(idx>0)show(idx-1)}
+function buildOverview(){
+  const grid=document.getElementById('overviewGrid');grid.innerHTML='';
+  slides.forEach((s,n)=>{
+    const d=document.createElement('div');d.className='thumb';
+    d.innerHTML='<b>'+(n+1).toString().padStart(2,'0')+'</b><span>'+(s.dataset.title||'슬라이드')+'</span>';
+    d.onclick=()=>{document.getElementById('overview').classList.remove('show');show(n)};
+    grid.appendChild(d);
+  });
+}
+function toggleOverview(){document.getElementById('overview').classList.toggle('show')}
+function copyPrompt(btn){
+  const box=btn.closest('.prompt-box');
+  const text=box.querySelector('.prompt-text').innerText;
+  navigator.clipboard.writeText(text).then(()=>{
+    const old=btn.textContent;btn.textContent='복사됨';setTimeout(()=>btn.textContent=old,1200);
+  }).catch(()=>{
+    const range=document.createRange();range.selectNodeContents(box.querySelector('.prompt-text'));
+    const sel=window.getSelection();sel.removeAllRanges();sel.addRange(range);
+  });
+}
+document.addEventListener('keydown',e=>{
+  if(e.key==='ArrowRight'||e.key==='PageDown'||e.key===' ')nextSlide();
+  if(e.key==='ArrowLeft'||e.key==='PageUp')prevSlide();
+  if(e.key.toLowerCase()==='o')toggleOverview();
+  if(e.key.toLowerCase()==='h')document.body.classList.toggle('hide-ui');
+  if(e.key.toLowerCase()==='p')window.print();
+  if(e.key==='Escape')document.getElementById('overview').classList.remove('show');
+});
+(function(){
+  slides.forEach((s,n)=>{const fb=s.querySelector('.footer b');if(fb)fb.textContent=String(n+1).padStart(2,'0');});
+  buildOverview();
+  const m=location.hash.match(/slide-(\d+)/);if(m)show(parseInt(m[1],10)-1);else show(0);
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,184 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AI 활용 강의자료실</title>
+<meta name="description" content="전북특별자치도교육청 AI 활용 연수 강의안과 실습파일 모음">
+<meta property="og:title" content="AI 활용 강의자료실">
+<meta property="og:description" content="AI 활용 연수 강의안·PDF·실습파일을 한곳에서 내려받으세요.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%232447B8'/%3E%3Cpath d='M9 10h14M9 16h14M9 22h9' stroke='white' stroke-width='3' stroke-linecap='round'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pretendard@1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+<style>
+:root{
+  --bg:#F6F7FB; --surface:#FFFFFF; --ink:#141A2E; --ink-2:#4A5270; --ink-3:#7B829C;
+  --line:#E3E6EF; --primary:#2447B8; --primary-soft:#E8EDFB; --accent:#E8793A;
+  --radius:16px;
+}
+@media (prefers-color-scheme: dark){
+  :root{
+    --bg:#0E1220; --surface:#171C2E; --ink:#EEF0F7; --ink-2:#B3B9CF; --ink-3:#848BA5;
+    --line:#2A3148; --primary:#7C9BFF; --primary-soft:#1F2945; --accent:#FF9A5C;
+  }
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:"Pretendard Variable",Pretendard,"Noto Sans KR","Malgun Gothic",sans-serif;
+  background:var(--bg);color:var(--ink);line-height:1.6;-webkit-font-smoothing:antialiased;word-break:keep-all}
+a{color:inherit}
+.wrap{max-width:1080px;margin:0 auto;padding:0 24px}
+
+header.wrap{padding-top:72px;padding-bottom:40px}
+.eyebrow{font-size:14px;font-weight:600;color:var(--primary);letter-spacing:.02em}
+h1{font-size:clamp(32px,5vw,48px);font-weight:800;letter-spacing:-.03em;line-height:1.2;margin:10px 0 14px}
+.lead{font-size:18px;color:var(--ink-2);max-width:640px}
+.stats{display:flex;gap:28px;margin-top:28px;flex-wrap:wrap}
+.stat b{display:block;font-size:28px;font-weight:800;letter-spacing:-.02em}
+.stat span{font-size:13px;color:var(--ink-3)}
+
+.toolbar{position:sticky;top:0;z-index:5;background:color-mix(in srgb,var(--bg) 90%,transparent);
+  backdrop-filter:blur(8px);padding:14px 0;border-bottom:1px solid var(--line)}
+.toolbar .wrap{display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+.search{flex:1 1 260px;display:flex;align-items:center;gap:8px;background:var(--surface);
+  border:1px solid var(--line);border-radius:12px;padding:0 14px;height:44px}
+.search input{border:0;outline:0;background:transparent;font:inherit;font-size:15px;color:var(--ink);width:100%}
+.search:focus-within{border-color:var(--primary)}
+.chips{display:flex;gap:6px;flex-wrap:wrap}
+.chip{border:1px solid var(--line);background:var(--surface);color:var(--ink-2);font:inherit;font-size:13px;
+  padding:6px 12px;border-radius:999px;cursor:pointer}
+.chip[aria-pressed="true"]{background:var(--primary);border-color:var(--primary);color:#fff}
+
+main.wrap{padding-top:32px;padding-bottom:64px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(440px,1fr));gap:20px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:28px;
+  display:flex;flex-direction:column;gap:14px;transition:border-color .15s}
+.card:hover{border-color:var(--primary)}
+.meta{display:flex;gap:8px;align-items:center;flex-wrap:wrap;font-size:13px;color:var(--ink-3)}
+.meta .date{font-weight:700;color:var(--primary)}
+.meta .dot{width:3px;height:3px;border-radius:50%;background:var(--ink-3)}
+.card h2{font-size:22px;font-weight:750;letter-spacing:-.02em;line-height:1.35}
+.card .sub{font-size:15px;color:var(--accent);font-weight:600;margin-top:2px}
+.card p{font-size:15px;color:var(--ink-2)}
+.tags{display:flex;gap:6px;flex-wrap:wrap}
+.tag{font-size:12px;color:var(--ink-2);background:var(--bg);border-radius:6px;padding:3px 8px}
+.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:auto;padding-top:6px}
+.btn{display:inline-flex;align-items:center;gap:6px;text-decoration:none;font-size:14px;font-weight:600;
+  padding:9px 14px;border-radius:10px;border:1px solid var(--line);color:var(--ink)}
+.btn:hover{border-color:var(--primary);color:var(--primary)}
+.btn.main{background:var(--primary);border-color:var(--primary);color:#fff}
+.btn.main:hover{filter:brightness(1.08);color:#fff}
+.btn svg{width:16px;height:16px;flex:none}
+.empty{text-align:center;color:var(--ink-3);padding:60px 0;display:none}
+
+.notice{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:24px 28px;margin-top:40px}
+.notice h3{font-size:16px;margin-bottom:8px}
+.notice ul{padding-left:18px;color:var(--ink-2);font-size:14px}
+footer{border-top:1px solid var(--line);padding:28px 0 48px;font-size:13px;color:var(--ink-3)}
+
+@media (max-width:520px){
+  .wrap{padding:0 16px}
+  header.wrap{padding-top:48px;padding-bottom:28px}
+  .grid{grid-template-columns:1fr}
+  .card{padding:22px}
+}
+</style>
+</head>
+<body>
+
+<header class="wrap">
+  <div class="eyebrow">전북특별자치도교육청 · AI 활용 연수</div>
+  <h1>AI 활용 강의자료실</h1>
+  <p class="lead">연수에서 쓴 강의안과 실습파일을 모았습니다. 필요한 자료를 바로 열어 보거나 내려받아 쓰세요.</p>
+  <div class="stats">
+    <div class="stat"><b id="n-lec">0</b><span>강의</span></div>
+    <div class="stat"><b id="n-file">0</b><span>자료</span></div>
+    <div class="stat"><b id="n-upd">-</b><span>최근 업데이트</span></div>
+  </div>
+</header>
+
+<div class="toolbar">
+  <div class="wrap">
+    <label class="search">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color:var(--ink-3)"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+      <input id="q" type="search" placeholder="강의 이름, 대상, 키워드 검색" aria-label="강의 검색">
+    </label>
+    <div class="chips" id="chips"></div>
+  </div>
+</div>
+
+<main class="wrap">
+  <div class="grid" id="grid"></div>
+  <div class="empty" id="empty">찾는 강의가 없습니다.</div>
+
+  <section class="notice">
+    <h3>이용 안내</h3>
+    <ul>
+      <li>강의안은 브라우저에서 바로 열립니다. ← → 키로 넘기고, F 키로 전체화면입니다.</li>
+      <li>실습파일의 이름·연락처·학교명은 모두 가상 데이터입니다.</li>
+      <li>연수·수업에 자유롭게 활용하되, 출처(전북특별자치도교육청 박호용)를 밝혀 주세요.</li>
+    </ul>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">© 2026 박호용 · 전북특별자치도교육청 빅데이터팀</div>
+</footer>
+
+<script src="lectures.js"></script>
+<script>
+(function(){
+  var L = window.LECTURES || [];
+  var icons = {
+    slides:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="12" rx="2"/><path d="M8 20h8M12 16v4"/></svg>',
+    pdf:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"/><path d="M14 3v6h6"/></svg>',
+    zip:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v12m0 0-4-4m4 4 4-4M4 19h16"/></svg>',
+    link:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 14a4 4 0 0 0 5.7 0l3-3a4 4 0 0 0-5.7-5.7l-1 1"/><path d="M14 10a4 4 0 0 0-5.7 0l-3 3a4 4 0 0 0 5.7 5.7l1-1"/></svg>'
+  };
+  function esc(s){return String(s==null?'':s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
+
+  document.getElementById('n-lec').textContent = L.length;
+  document.getElementById('n-file').textContent = L.reduce(function(a,l){return a+(l.files||[]).length},0);
+  document.getElementById('n-upd').textContent = L.map(function(l){return l.date}).sort().pop() || '-';
+
+  var tags = [];
+  L.forEach(function(l){(l.tags||[]).forEach(function(t){if(tags.indexOf(t)<0)tags.push(t)})});
+  var active = null;
+  var chips = document.getElementById('chips');
+  chips.innerHTML = '<button class="chip" aria-pressed="true" data-t="">전체</button>' +
+    tags.map(function(t){return '<button class="chip" aria-pressed="false" data-t="'+esc(t)+'">'+esc(t)+'</button>'}).join('');
+  chips.addEventListener('click',function(e){
+    var b = e.target.closest('.chip'); if(!b) return;
+    active = b.dataset.t || null;
+    chips.querySelectorAll('.chip').forEach(function(c){c.setAttribute('aria-pressed', c===b?'true':'false')});
+    render();
+  });
+  document.getElementById('q').addEventListener('input',render);
+
+  function card(l){
+    var btns = (l.files||[]).map(function(f){
+      var dl = (f.type==='pdf'||f.type==='zip');
+      return '<a class="btn'+(f.type==='slides'?' main':'')+'" href="'+esc(f.href)+'"'+
+        (dl ? ' download="'+esc(f.download||'')+'"' : ' target="_blank" rel="noopener"')+'>'+
+        (icons[f.type]||icons.link)+esc(f.label)+'</a>';
+    }).join('');
+    return '<article class="card">'+
+      '<div class="meta"><span class="date">'+esc(l.date)+'</span><span class="dot"></span><span>'+esc(l.audience)+'</span><span class="dot"></span><span>'+esc(l.duration)+'</span></div>'+
+      '<div><h2>'+esc(l.title)+'</h2><div class="sub">'+esc(l.subtitle)+'</div></div>'+
+      '<p>'+esc(l.summary)+'</p>'+
+      '<div class="tags">'+(l.tags||[]).map(function(t){return '<span class="tag">#'+esc(t)+'</span>'}).join('')+'</div>'+
+      '<div class="actions">'+btns+'</div></article>';
+  }
+  function render(){
+    var q = document.getElementById('q').value.trim().toLowerCase();
+    var list = L.filter(function(l){
+      if(active && (l.tags||[]).indexOf(active)<0) return false;
+      if(!q) return true;
+      return [l.title,l.subtitle,l.audience,l.summary,(l.tags||[]).join(' ')].join(' ').toLowerCase().indexOf(q)>=0;
+    });
+    document.getElementById('grid').innerHTML = list.map(card).join('');
+    document.getElementById('empty').style.display = list.length ? 'none' : 'block';
+  }
+  render();
+})();
+</script>
+</body>
+</html>
