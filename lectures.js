@@ -6,6 +6,20 @@
 */
 window.LECTURES = [
   {
+    id: "2026-admin-ai-doc",
+    date: "2026.10",
+    title: "AI를 활용한 문서작성",
+    subtitle: "내 방식을 한 번 적어두면 매번 고치지 않습니다",
+    audience: "행정직 · 문서를 많이 쓰는 직원",
+    duration: "이론 · 시연",
+    tags: ["문서작성", "작성 지침", "근거 자료"],
+    summary: "말투와 구조, 순서와 서식, 근거 자료를 한 번 적어두어 AI 초안을 매번 고치는 번거로움을 줄이는 법을 다룹니다.",
+    files: [
+      { type: "slides", label: "강의안 보기", href: "lectures/2026-admin-ai-doc/slides.html" },
+      { type: "pdf", label: "강의안 PDF", href: "lectures/2026-admin-ai-doc/slides.pdf", download: "AI를_활용한_문서작성_강의안.pdf" }
+    ]
+  },
+  {
     id: "2026-audit-ai",
     date: "2026.09",
     title: "AI를 활용한 감사보고서 작성",
