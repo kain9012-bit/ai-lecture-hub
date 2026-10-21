@@ -22,7 +22,7 @@ window.LECTURES = [
   },
   {
     id: "2026-admin-ai-doc",
-    date: "2026.10",
+    date: "2026.10.07",
     title: "AI를 활용한 문서작성",
     subtitle: "내 방식을 한 번 적어두면 매번 고치지 않습니다",
     audience: "행정직 · 문서를 많이 쓰는 직원",
