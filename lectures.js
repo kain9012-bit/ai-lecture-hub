@@ -6,6 +6,21 @@
 */
 window.LECTURES = [
   {
+    id: "2026-jinan-tool-room",
+    date: "2026.11.02",
+    title: "AI로 줄이는 반복 업무, 데이터 도구실 활용하기",
+    subtitle: "같은 일을 두 번 하지 않도록, 동료가 만든 도구로",
+    audience: "행정직(학교 행정실)",
+    duration: "120분 · 실습",
+    tags: ["데이터 도구실", "JB업무ON", "업무시스템 도구"],
+    summary: "진안교육지원청 전문적 학습공동체 연수. JB업무ON으로 이수증 정리, 지출 증빙 PDF 통합, HWPX 변환, 엑셀 병합, 개인정보 마스킹을 직접 해 보고 나이스·K-에듀파인·JB메신저 위에서 쓰는 도구를 익힙니다.",
+    files: [
+      { type: "slides", label: "강의안 보기", href: "lectures/2026-jinan-tool-room/slides.html" },
+      { type: "pdf", label: "강의안 PDF", href: "lectures/2026-jinan-tool-room/slides.pdf", download: "데이터도구실_활용하기_강의안.pdf" },
+      { type: "zip", label: "실습파일", href: "lectures/2026-jinan-tool-room/practice.zip", download: "실습파일_데이터도구실.zip" }
+    ]
+  },
+  {
     id: "2026-admin-ai-doc",
     date: "2026.10",
     title: "AI를 활용한 문서작성",
