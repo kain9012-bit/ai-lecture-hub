@@ -6,6 +6,21 @@
 */
 window.LECTURES = [
   {
+    id: "2026-grade7-ai-automation",
+    date: "2026.11.18",
+    title: "AI로 시작하는 업무 자동화",
+    subtitle: "있는 도구로 시작해, 내 도구를 직접 만듭니다",
+    audience: "7급 역량 과정 2기(7급 지방공무원)",
+    duration: "150분 · 실습",
+    tags: ["JB업무ON", "업무시스템 도구", "개인정보 마스킹", "러버블"],
+    summary: "JB업무ON과 업무시스템 도구로 반복 업무를 줄이고, AI로 개인정보 마스킹 프로그램을 직접 만들어 봅니다.",
+    files: [
+      { type: "slides", label: "강의안 보기", href: "lectures/2026-grade7-ai-automation/slides.html" },
+      { type: "pdf", label: "강의안 PDF", href: "lectures/2026-grade7-ai-automation/slides.pdf", download: "AI로_시작하는_업무_자동화_강의안.pdf" },
+      { type: "zip", label: "실습파일", href: "lectures/2026-grade7-ai-automation/practice.zip", download: "실습파일_7급역량과정.zip" }
+    ]
+  },
+  {
     id: "2026-jinan-tool-room",
     date: "2026.11.02",
     title: "AI로 줄이는 반복 업무, 데이터 도구실 활용하기",
