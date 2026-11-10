@@ -6,6 +6,21 @@
 */
 window.LECTURES = [
   {
+    id: "2026-ai-automation-practice",
+    date: "2026.11.24",
+    title: "내 업무, 어디부터 줄일까",
+    subtitle: "내 업무 자동화 구간 찾고 AI로 직접 만들기",
+    audience: "AI 활용 업무자동화 실습 연수 신청 교직원",
+    duration: "180분 · 실습",
+    tags: ["업무 쪼개기", "HTML 웹앱", "확장 프로그램"],
+    summary: "업무를 단계로 쪼개 자동화할 곳을 찾고, AI로 HTML 웹앱과 브라우저 확장 프로그램을 직접 만들어 봅니다.",
+    files: [
+      { type: "slides", label: "강의안 보기", href: "lectures/2026-ai-automation-practice/slides.html" },
+      { type: "pdf", label: "강의안 PDF", href: "lectures/2026-ai-automation-practice/slides.pdf", download: "내_업무_어디부터_줄일까_강의안.pdf" },
+      { type: "zip", label: "실습파일", href: "lectures/2026-ai-automation-practice/practice.zip", download: "실습파일_업무자동화_실습연수.zip" }
+    ]
+  },
+  {
     id: "2026-grade7-ai-automation",
     date: "2026.11.18",
     title: "AI로 시작하는 업무 자동화",
