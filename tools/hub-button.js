@@ -6,9 +6,9 @@
     var css = document.createElement('style');
     css.textContent =
       '#hub-btn{all:initial;position:fixed!important;left:14px!important;bottom:14px!important;z-index:2147483647!important;' +
-      'display:inline-flex!important;align-items:center;gap:6px;padding:9px 18px!important;' +
+      'display:inline-flex!important;align-items:center;gap:6px;padding:10px 20px!important;' +
       'border:2px solid #fff!important;border-radius:999px!important;background:#0f172a!important;color:#fff!important;' +
-      'font:700 15px/1 "Pretendard","Malgun Gothic",sans-serif!important;text-decoration:none!important;cursor:pointer;' +
+      'font:700 17px/1 "Pretendard","Malgun Gothic",sans-serif!important;text-decoration:none!important;cursor:pointer;' +
       'box-shadow:0 4px 14px rgba(0,0,0,.35)!important;transition:background .15s}' +
       '#hub-btn:hover,#hub-btn:focus{background:#1e293b!important}' +
       '@media print{#hub-btn{display:none!important}}';
