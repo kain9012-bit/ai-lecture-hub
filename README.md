@@ -44,6 +44,6 @@ lectures/<강의>/  강의별 파일
 - 다른 사람의 강의자료, 개인정보가 담긴 파일은 올리지 않기
 
 ## 「강의자료 모음」 버튼 자동 부착
-- 배포할 때 `.github/workflows/pages.yml`이 `lectures/*/slides.html`마다 화면 위 가운데에 「📚 다른 강의자료 보기 ↗」 버튼을 붙입니다. 마우스를 움직이면 나타나고, 키보드로 넘기거나 가만히 두면 숨습니다.
+- 배포할 때 `.github/workflows/pages.yml`이 `lectures/*/slides.html`마다 왼쪽 아래에 「강의자료 모음 ↗」 버튼을 붙입니다.
 - 원본 파일은 고치지 않으니, 강의안을 복사해 넣기만 하면 됩니다.
 - 버튼 모양은 `tools/hub-button.js`에서 바꿉니다.
